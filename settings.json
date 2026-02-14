@@ -131,11 +131,12 @@
    ".monaco-breadcrumbs:hover *": {
       "opacity": "1 !important"
    },
+   ".viewpane-filter .monaco-inputbox": {
+      "border-radius": "9999px !important"
+   },
    ".part.panel.bottom": {
-      "margin": "8px 8px 0 8px",
+      "margin": "0 8px",
       "border-radius": "14px",
-      "overflow": "hidden",
-      "max-height": "calc(100% - 15px) !important",
       "border-top": "1px solid rgba(255,255,255,0.1) !important",
       "border-left": "1px solid rgba(255,255,255,0.06) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
