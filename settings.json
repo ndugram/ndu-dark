@@ -79,10 +79,10 @@
       "border-radius": "24px !important",
       "overflow": "hidden !important",
       "max-height": "calc(100% - 16px) !important",
-      "border-top": "1px solid rgba(255,255,255,0.08) !important",
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
-      "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
-      "border-right": "1px solid rgba(255,255,255,0.02) !important",
+      "border-top": "1px solid rgba(255,255,255,0.12) !important",
+      "border-left": "1px solid rgba(255,255,255,0.08) !important",
+      "border-bottom": "1px solid rgba(255,255,255,0.03) !important",
+      "border-right": "1px solid rgba(255,255,255,0.03) !important",
       "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
    },
    ".editor-actions": {
@@ -223,6 +223,10 @@
    ".tab .monaco-icon-label.file-icon::before": {
       "filter": "drop-shadow(0 0 2px)",
       "opacity": "1 !important"
+   },
+   ".letterpress": {
+      "opacity": "0.4 !important",
+      "filter": "brightness(0) drop-shadow(2px 2px 1px rgba(255,255,255,0.12)) drop-shadow(-2px -2px 1px rgba(0,0,0,1)) !important"
    },
    ".part.titlebar .action-label": {
       "border-radius": "50% !important"
