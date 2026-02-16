@@ -252,31 +252,32 @@
       "background": "#151518 !important",
       "border-radius": "9999px",
       "overflow": "visible !important",
-      "padding": "8px 0",
+      "padding": "12px 0",
       "display": "flex !important",
       "flex-direction": "column !important",
       "align-items": "center !important",
+      "gap": "8px !important",
       "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.1), inset 1px 0 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.02), inset -1px 0 0 0 rgba(255,255,255,0.02), inset 0 1px 3px 0 rgba(255,255,255,0.04), 0 1px 4px 0 rgba(0,0,0,0.25) !important"
    },
    ".part.activitybar .content > div:last-child": {
       "transform": "translateY(-10px) !important"
    },
    ".part.activitybar .action-item .action-label": {
-      "font-size": "18px !important",
-      "width": "30px !important",
-      "height": "30px !important",
-      "line-height": "30px !important",
+      "font-size": "24px !important",
+      "width": "40px !important",
+      "height": "40px !important",
+      "line-height": "40px !important",
       "display": "flex !important",
       "align-items": "center !important",
       "justify-content": "center !important",
       "overflow": "visible !important"
    },
    ".part.activitybar .action-item .action-label .codicon": {
-      "font-size": "18px !important"
+      "font-size": "24px !important"
    },
    ".part.activitybar .action-item .action-label img": {
-      "max-width": "18px !important",
-      "max-height": "18px !important"
+      "max-width": "24px !important",
+      "max-height": "24px !important"
    },
    ".part.activitybar .action-item .active-item-indicator": {
       "display": "none !important"
@@ -284,8 +285,8 @@
    ".part.activitybar .action-item.checked .action-label": {
       "background": "linear-gradient(180deg, rgba(55,56,62,0.9), rgba(40,41,46,0.7)) !important",
       "border-radius": "50% !important",
-      "width": "30px !important",
-      "height": "30px !important",
+      "width": "40px !important",
+      "height": "40px !important",
       "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.12), inset 1px 0 0 0 rgba(255,255,255,0.06), inset 0 -1px 0 0 rgba(255,255,255,0.02), inset -1px 0 0 0 rgba(255,255,255,0.02), inset 0 1px 2px 0 rgba(255,255,255,0.05), 0 1px 3px 0 rgba(0,0,0,0.3) !important"
    },
    ".part.activitybar .actions-container": {
