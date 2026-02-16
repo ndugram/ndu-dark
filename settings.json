@@ -17,10 +17,7 @@
       "border-radius": "18px !important",
       "overflow": "hidden !important",
       "max-height": "calc(100% - 16px) !important",
-      "border-top": "1px solid rgba(255,255,255,0.1) !important",
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
-      "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
-      "border-right": "1px solid rgba(255,255,255,0.02) !important",
+      "border": "none !important",
       "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
    },
    ".part.sidebar .composite.title": {
