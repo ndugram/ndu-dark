@@ -1,18 +1,21 @@
 # ndu-dark
 
-<a href="https://www.buymeacoffee.com/bwya77" style="margin-right: 10px;">
-    <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" />
-</a>
-<a href="https://github.com/sponsors/bwya77">
-    <img src="https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA" />
-</a>
+<div align="center">
 
+**A dark VS Code theme with deep backgrounds and warm syntax highlighting**
+
+[![Visual Studio Marketplace](https://img.shields.io/badge/VS%20Code-ndu--dark-blue?style=flat-square&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=ndu-dark)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
+
+</div>
+
+---
 
 ## **THIS THEME IS STILL A WORK IN PROGRESS**
 
-A dark color theme for Visual Studio Code inspired by JetBrains' Islands Dark theme. Features floating glass-like panels, rounded corners, smooth animations, and a deeply refined UI.
+A dark color theme for Visual Studio Code with floating glass-like panels, rounded corners, smooth animations, and a deeply refined UI.
 
-![Islands Dark Screenshot](assets/CleanShot%202026-02-14%20at%2021.47.05@2x.png)
+![ndu-dark Screenshot](assets/CleanShot%202026-02-14%20at%2021.47.05@2x.png)
 
 ## Features
 
@@ -28,7 +31,7 @@ A dark color theme for Visual Studio Code inspired by JetBrains' Islands Dark th
 - Warm syntax highlighting with comprehensive language support (JS/TS, Python, Go, Rust, HTML/CSS, JSON, YAML, Markdown)
 - IBM Plex Mono in the editor, FiraCode Nerd Font Mono in the terminal
 
-![Islands Dark Screenshot UI](assets/CleanShot%202026-02-14%20at%2021.45.00@2x.png)
+![ndu-dark Screenshot UI](assets/CleanShot%202026-02-14%20at%2021.45.00@2x.png)
 
 ## Installation
 
@@ -41,13 +44,13 @@ The fastest way to install:
 #### macOS/Linux
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ndugram/ndu-dark/main/bootstrap.sh | bash
 ```
 
 #### Windows
 
 ```powershell
-irm https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.ps1 | iex
+irm https://raw.githubusercontent.com/ndugram/ndu-dark/main/bootstrap.ps1 | iex
 ```
 
 ### Manual Clone Install
@@ -57,21 +60,21 @@ If you prefer to clone first:
 #### macOS/Linux
 
 ```bash
-git clone https://github.com/bwya77/vscode-dark-islands.git islands-dark
-cd islands-dark
+git clone https://github.com/ndugram/ndu-dark.git ndu-dark
+cd ndu-dark
 ./install.sh
 ```
 
 #### Windows
 
 ```powershell
-git clone https://github.com/bwya77/vscode-dark-islands.git islands-dark
-cd islands-dark
+git clone https://github.com/ndugram/ndu-dark.git ndu-dark
+cd ndu-dark
 .\install.ps1
 ```
 
 The scripts will automatically:
-- ✅ Install the Islands Dark theme extension
+- ✅ Install the ndu-dark theme extension
 - ✅ Install the Custom UI Style extension
 - ✅ Install Bear Sans UI fonts
 - ✅ Merge settings into your VS Code: configuration
@@ -88,18 +91,18 @@ If you prefer to install manually, follow these steps:
 Clone this repo and copy the extension files:
 
 ```bash
-git clone https://github.com/bwya77/vscode-dark-islands.git islands-dark
-cd islands-dark
-mkdir -p ~/.vscode/extensions/bwya77.islands-dark-1.0.0
-cp package.json ~/.vscode/extensions/bwya77.islands-dark-1.0.0/
-cp -r themes ~/.vscode/extensions/bwya77.islands-dark-1.0.0/
+git clone https://github.com/ndugram/ndu-dark.git ndu-dark
+cd ndu-dark
+mkdir -p ~/.vscode/extensions/ndu-dark-1.1.0
+cp package.json ~/.vscode/extensions/ndu-dark-1.1.0/
+cp -r themes ~/.vscode/extensions/ndu-dark-1.1.0/
 ```
 
 On Windows (PowerShell):
 ```powershell
-git clone https://github.com/bwya77/vscode-dark-islands.git islands-dark
-cd islands-dark
-$ext = "$env:USERPROFILE\.vscode\extensions\bwya77.islands-dark-1.0.0"
+git clone https://github.com/ndugram/ndu-dark.git ndu-dark
+cd ndu-dark
+$ext = "$env:USERPROFILE\.vscode\extensions\ndu-dark-1.1.0"
 New-Item -ItemType Directory -Path $ext -Force
 Copy-Item package.json $ext\
 Copy-Item themes $ext\themes -Recurse
@@ -159,14 +162,14 @@ Copy the contents of `settings.json` from this repo into your VS Code: settings:
 | Element | Effect |
 |---------|--------|
 | **Canvas** | Deep dark background (`#131217`) behind all panels |
-| **Sidebar** | Floating with 24px rounded corners, glass borders, drop shadow |
-| **Editor** | Floating with 24px rounded corners, glass borders, browser-tab effect |
+| **Sidebar** | Floating with 18px rounded corners, glass borders, drop shadow |
+| **Editor** | Floating with 18px rounded corners, glass borders, browser-tab effect |
 | **Activity bar** | Pill-shaped with glass inset shadows, circular selection indicator |
 | **Command center** | Pill-shaped with glass effect |
-| **Bottom panel** | Floating with 14px rounded corners, glass borders |
-| **Right sidebar** | Floating with 24px rounded corners, glass borders |
-| **Notifications** | 14px rounded corners, glass borders, deep drop shadow |
-| **Command palette** | 16px rounded corners, glass borders, rounded list rows |
+| **Bottom panel** | Floating with 12px rounded corners, glass borders |
+| **Right sidebar** | Floating with 18px rounded corners, glass borders |
+| **Notifications** | 12px rounded corners, glass borders, deep drop shadow |
+| **Command palette** | 14px rounded corners, glass borders, rounded list rows |
 | **Scrollbars** | Pill-shaped thumbs with fade transition |
 | **Tabs** | Browser-tab style (active tab open at bottom), close button fades in on hover |
 | **Breadcrumbs** | Hidden until hover with smooth fade transition |
@@ -190,7 +193,7 @@ If you previously used the **Custom CSS and JS Loader** extension (`be5invis.vsc
 
 ## Credits
 
-Inspired by the [JetBrains Islands Dark](https://www.jetbrains.com/) UI theme.
+Inspired by modern JetBrains IDE themes.
 
 ## License
 

@@ -32,7 +32,7 @@ echo ""
 echo "📦 Step 1: Installing ndu-dark theme extension..."
 
 # Install by copying to VS Code extensions directory
-EXT_DIR="$HOME/.vscode/extensions/ndu-dark-1.0.0"
+EXT_DIR="$HOME/.vscode/extensions/ndu-dark-1.1.0"
 rm -rf "$EXT_DIR"
 mkdir -p "$EXT_DIR"
 cp "$SCRIPT_DIR/package.json" "$EXT_DIR/"
@@ -126,7 +126,7 @@ const settingsFile = path.join(settingsDir, 'settings.json');
 const existingText = fs.readFileSync(settingsFile, 'utf8');
 const existingSettings = JSON.parse(stripJsonc(existingText));
 
-// Merge settings - Islands Dark settings take precedence
+// Merge settings - ndu-dark settings take precedence
 const mergedSettings = { ...existingSettings, ...newSettings };
 
 // Deep merge custom-ui-style.stylesheet

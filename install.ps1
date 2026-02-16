@@ -47,7 +47,7 @@ Write-Host ""
 Write-Host "Step 1: Installing ndu-dark theme extension..."
 
 # Install by copying to VS Code extensions directory
-$extDir = "$env:USERPROFILE\.vscode\extensions\ndu-dark-1.0.0"
+$extDir = "$env:USERPROFILE\.vscode\extensions\ndu-dark-1.1.0"
 if (Test-Path $extDir) {
     Remove-Item -Recurse -Force $extDir
 }

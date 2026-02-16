@@ -3,14 +3,14 @@
 set -e
 
 # ndu-dark Theme Bootstrap Installer
-# One-liner: curl -fsSL https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.sh | bash
+# One-liner: curl -fsSL https://raw.githubusercontent.com/ndugram/ndu-dark/main/bootstrap.sh | bash
 
 echo "🌙 ndu-dark Theme Bootstrap Installer"
 echo "=========================================="
 echo ""
 
-REPO_URL="https://github.com/bwya77/vscode-dark-islands.git"
-INSTALL_DIR="$HOME/.islands-dark-temp"
+REPO_URL="https://github.com/ndugram/ndu-dark.git"
+INSTALL_DIR="$HOME/.ndu-dark-temp"
 
 # Detect OS
 if [[ "$OSTYPE" == "darwin"* ]]; then

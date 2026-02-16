@@ -1,5 +1,5 @@
 # ndu-dark Theme Bootstrap Installer for Windows
-# One-liner: irm https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.ps1 | iex
+# One-liner: irm https://raw.githubusercontent.com/ndugram/ndu-dark/main/bootstrap.ps1 | iex
 
 param()
 
@@ -9,7 +9,7 @@ echo "🌙 ndu-dark Theme Bootstrap Installer"
 echo "=========================================="
 echo ""
 
-$RepoUrl = "https://github.com/bwya77/vscode-dark-islands.git"
+$RepoUrl = "https://github.com/ndugram/ndu-dark.git"
 $InstallDir = "$env:TEMP\ndu-dark-temp"
 
 echo "📥 Step 1: Downloading ndu-dark..."
