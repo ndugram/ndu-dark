@@ -13,7 +13,7 @@
    },
    ".part.sidebar": {
       "font-family": "'Bear Sans UI', sans-serif !important",
-      "margin": "8px 8px 0 16px",
+      "margin": "8px 8px 0 20px",
       "border-radius": "18px !important",
       "overflow": "hidden !important",
       "max-height": "calc(100% - 8px) !important",
@@ -49,7 +49,7 @@
       "outline-offset": "-1px !important"
    },
    ".explorer-viewlet .split-view-container": {
-      "transform": "translateY(-22px) !important"
+      "transform": "translateY(-8px) !important"
    },
    ".part.sidebar .header": {
       "padding-right": "8px !important",
@@ -268,7 +268,7 @@
    },
     ".part.activitybar": {
        "background": "#121216 !important",
-       "margin": "8px 12px 30px 12px",
+       "margin": "8px 16px 30px 12px",
       "width": "48px !important",
       "min-width": "48px !important"
    },
@@ -276,32 +276,32 @@
       "background": "#151518 !important",
       "border-radius": "9999px",
       "overflow": "visible !important",
-      "padding": "16px 0",
+      "padding": "12px 0",
       "display": "flex !important",
       "flex-direction": "column !important",
       "align-items": "center !important",
-      "gap": "12px !important",
+      "gap": "10px !important",
       "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.1), inset 1px 0 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.02), inset -1px 0 0 0 rgba(255,255,255,0.02), inset 0 1px 3px 0 rgba(255,255,255,0.04), 0 1px 4px 0 rgba(0,0,0,0.25) !important"
    },
    ".part.activitybar .content > div:last-child": {
-      "transform": "translateY(-10px) !important"
+      "transform": "translateY(-4px) !important"
    },
    ".part.activitybar .action-item .action-label": {
-      "font-size": "28px !important",
-      "width": "48px !important",
-      "height": "48px !important",
-      "line-height": "48px !important",
+      "font-size": "24px !important",
+      "width": "40px !important",
+      "height": "40px !important",
+      "line-height": "40px !important",
       "display": "flex !important",
       "align-items": "center !important",
       "justify-content": "center !important",
       "overflow": "visible !important"
    },
    ".part.activitybar .action-item .action-label .codicon": {
-      "font-size": "28px !important"
+      "font-size": "24px !important"
    },
    ".part.activitybar .action-item .action-label img": {
-      "max-width": "28px !important",
-      "max-height": "28px !important"
+      "max-width": "24px !important",
+      "max-height": "24px !important"
    },
    ".part.activitybar .action-item .active-item-indicator": {
       "display": "none !important"
@@ -463,8 +463,7 @@
       "box-shadow": "inset 0 0 0 1px rgba(255,255,255,0.06) !important"
    },
    ".scrollbar .slider": {
-      "border-radius": "9999px !important",
-      "transition": "opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important"
+      "display": "none !important"
    },
    ".monaco-count-badge": {
       "border-radius": "9999px !important",
