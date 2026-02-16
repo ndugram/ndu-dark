@@ -13,10 +13,10 @@
    },
    ".part.sidebar": {
       "font-family": "'Bear Sans UI', sans-serif !important",
-      "margin": "8px 8px 0 20px",
+      "margin": "8px 8px 8px 20px",
       "border-radius": "18px !important",
       "overflow": "hidden !important",
-      "max-height": "calc(100% - 8px) !important",
+      "max-height": "calc(100% - 16px) !important",
       "border-top": "1px solid rgba(255,255,255,0.1) !important",
       "border-left": "1px solid rgba(255,255,255,0.06) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
@@ -268,7 +268,7 @@
    },
     ".part.activitybar": {
        "background": "#121216 !important",
-       "margin": "8px 16px 30px 12px",
+       "margin": "8px 20px 30px 12px",
       "width": "48px !important",
       "min-width": "48px !important"
    },
