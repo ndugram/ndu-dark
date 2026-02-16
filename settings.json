@@ -13,7 +13,7 @@
    },
    ".part.sidebar": {
       "font-family": "'Bear Sans UI', sans-serif !important",
-      "margin": "8px 8px 8px 20px",
+      "margin": "8px 8px 8px 24px",
       "border-radius": "18px !important",
       "overflow": "hidden !important",
       "max-height": "calc(100% - 16px) !important",
@@ -269,7 +269,7 @@
    },
     ".part.activitybar": {
        "background": "#121216 !important",
-       "margin": "8px 6px 30px 12px",
+       "margin": "8px 4px 30px 12px",
       "width": "48px !important",
       "min-width": "48px !important"
    },
