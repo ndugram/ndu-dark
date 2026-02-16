@@ -1,7 +1,5 @@
 # ndu-dark
 
-<div align="center">
-
 **A dark VS Code theme with deep backgrounds and warm syntax highlighting**
 
 ---
