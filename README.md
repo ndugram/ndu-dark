@@ -4,18 +4,11 @@
 
 **A dark VS Code theme with deep backgrounds and warm syntax highlighting**
 
-[![Visual Studio Marketplace](https://img.shields.io/badge/VS%20Code-ndu--dark-blue?style=flat-square&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=ndu-dark)
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
-
-</div>
-
 ---
 
 ## **THIS THEME IS STILL A WORK IN PROGRESS**
 
 A dark color theme for Visual Studio Code with floating glass-like panels, rounded corners, smooth animations, and a deeply refined UI.
-
-![ndu-dark Screenshot](assets/CleanShot%202026-02-14%20at%2021.47.05@2x.png)
 
 ## Features
 
@@ -27,11 +20,8 @@ A dark color theme for Visual Studio Code with floating glass-like panels, round
 - Tab close buttons that fade in on hover
 - Smooth transitions on sidebar selections, scrollbars, and status bar
 - Pill-shaped scrollbar thumbs
-- Color-matched icon glow effect (works best with [Seti Folder](https://marketplace.visualstudio.com/items?itemName=l-igh-t.vscode-theme-seti-folder) icon theme)
 - Warm syntax highlighting with comprehensive language support (JS/TS, Python, Go, Rust, HTML/CSS, JSON, YAML, Markdown)
 - IBM Plex Mono in the editor, FiraCode Nerd Font Mono in the terminal
-
-![ndu-dark Screenshot UI](assets/CleanShot%202026-02-14%20at%2021.45.00@2x.png)
 
 ## Installation
 
@@ -60,7 +50,7 @@ If you prefer to clone first:
 #### macOS/Linux
 
 ```bash
-git clone https://github.com/ndugram/ndu-dark.git ndu-dark
+git clone https://github.com/ndugram/ndu-dark.git
 cd ndu-dark
 ./install.sh
 ```
@@ -68,7 +58,7 @@ cd ndu-dark
 #### Windows
 
 ```powershell
-git clone https://github.com/ndugram/ndu-dark.git ndu-dark
+git clone https://github.com/ndugram/ndu-dark.git
 cd ndu-dark
 .\install.ps1
 ```
@@ -82,22 +72,6 @@ The scripts will automatically:
 
 > **Note:** IBM Plex Mono and FiraCode Nerd Font Mono must be installed separately (the script will remind you).
 
-### Manual Installation
-
-If you prefer to install manually, follow these steps:
-
-#### Step 1: Install the theme
-
-Clone this repo and copy the extension files:
-
-```bash
-git clone https://github.com/ndugram/ndu-dark.git ndu-dark
-cd ndu-dark
-mkdir -p ~/.vscode/extensions/ndu-dark-1.1.0
-cp package.json ~/.vscode/extensions/ndu-dark-1.1.0/
-cp -r themes ~/.vscode/extensions/ndu-dark-1.1.0/
-```
-
 On Windows (PowerShell):
 ```powershell
 git clone https://github.com/ndugram/ndu-dark.git ndu-dark
@@ -107,55 +81,6 @@ New-Item -ItemType Directory -Path $ext -Force
 Copy-Item package.json $ext\
 Copy-Item themes $ext\themes -Recurse
 ```
-
-#### Step 2: Install the Custom UI Style extension
-
-The floating panels, rounded corners, glass borders, and animations are powered by the **Custom UI Style** extension.
-
-1. Open **Extensions** in VS Code: (`Cmd+Shift+X` / `Ctrl+Shift+X`)
-2. Search for **Custom UI Style** (by `subframe7536`)
-3. Click **Install**
-
-#### Step 3: Install recommended icon theme
-
-For the best experience with the color-matched icon glow effect, install the **Seti Folder** icon theme:
-
-1. Open **Extensions** in VS Code (`Cmd+Shift+X` / `Ctrl+Shift+X`)
-2. Search for **[Seti Folder](https://marketplace.visualstudio.com/items?itemName=l-igh-t.vscode-theme-seti-folder)** (by `l-igh-t`)
-3. Click **Install**
-4. Set it as your icon theme: **Command Palette** > **Preferences: File Icon Theme** > **Seti Folder**
-
-#### Step 5: Install fonts
-
-This theme uses two fonts:
-
-- **IBM Plex Mono** — used in the editor
-- **FiraCode Nerd Font Mono** — used in the terminal
-- **Bear Sans UI** — used in the sidebar, tabs, command center, and status bar (included in `fonts/` folder)
-
-To install Bear Sans UI:
-1. Open the `fonts/` folder in this repo
-2. Select all `.otf` files and double-click to open in Font Book (macOS) or right-click > Install (Windows)
-
-If you prefer different fonts, update the `editor.fontFamily`, `terminal.integrated.fontFamily`, and `font-family` values in the settings.
-
-#### Step 6: Apply the settings
-
-Copy the contents of `settings.json` from this repo into your VS Code: settings:
-
-1. Open **Command Palette** (`Cmd+Shift+P` / `Ctrl+Shift+P`)
-2. Search for **Preferences: Open User Settings (JSON)**
-3. Merge the contents of this repo's `settings.json` into your settings file
-
-> **Note:** If you already have existing settings, merge carefully. The key settings are `workbench.colorTheme`, `custom-ui-style.stylesheet`, and the font/indent preferences.
-
-#### Step 7: Enable Custom UI Style
-
-1. Open **Command Palette** (`Cmd+Shift+P` / `Ctrl+Shift+P`)
-2. Run **Custom UI Style: Enable**
-3. VS Code will reload
-
-> **Note:** You may see a "corrupt installation" warning after enabling. This is expected since Custom UI Style injects CSS into VS Code. Click the gear icon on the warning and select **Don't Show Again**.
 
 ## What the CSS customizations do
 
