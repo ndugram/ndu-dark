@@ -21,10 +21,14 @@
       "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
    },
    ".part.sidebar .composite.title": {
-      "padding": "8px 12px 4px 12px !important"
+      "padding": "8px 12px 4px 12px !important",
+      "margin-top": "0 !important",
+      "transform": "none !important"
    },
    ".part.sidebar > .composite.title": {
-      "padding": "8px 12px 4px 12px !important"
+      "padding": "8px 12px 4px 12px !important",
+      "margin-top": "0 !important",
+      "transform": "none !important"
    },
    ".part.sidebar.pane-header": {
       "padding-top": "8px !important",
