@@ -2,7 +2,7 @@
 
 set -e
 
-echo "🏝️  Islands Dark Theme Installer for macOS/Linux"
+echo "🌙 ndu-dark Theme Installer for macOS/Linux"
 echo "================================================"
 echo ""
 
@@ -29,10 +29,10 @@ echo -e "${GREEN}✓ VS Code CLI found${NC}"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo ""
-echo "📦 Step 1: Installing Islands Dark theme extension..."
+echo "📦 Step 1: Installing ndu-dark theme extension..."
 
 # Install by copying to VS Code extensions directory
-EXT_DIR="$HOME/.vscode/extensions/bwya77.islands-dark-1.0.0"
+EXT_DIR="$HOME/.vscode/extensions/ndu-dark-1.0.0"
 rm -rf "$EXT_DIR"
 mkdir -p "$EXT_DIR"
 cp "$SCRIPT_DIR/package.json" "$EXT_DIR/"
@@ -93,7 +93,7 @@ if [ -f "$SETTINGS_FILE" ]; then
     cp "$SETTINGS_FILE" "$SETTINGS_FILE.backup"
 
     # Read the existing settings and merge
-    echo "   Merging Islands Dark settings with your existing settings..."
+    echo "   Merging ndu-dark settings with your existing settings..."
 
     # Create a temporary file with the merge logic using node.js if available
     if command -v node &> /dev/null; then
@@ -156,7 +156,7 @@ echo "🚀 Step 5: Enabling Custom UI Style..."
 echo "   VS Code will reload after applying changes..."
 
 # Create a flag file to indicate first run
-FIRST_RUN_FILE="$SCRIPT_DIR/.islands_dark_first_run"
+FIRST_RUN_FILE="$SCRIPT_DIR/.ndu_dark_first_run"
 if [ ! -f "$FIRST_RUN_FILE" ]; then
     touch "$FIRST_RUN_FILE"
     echo ""
@@ -176,17 +176,17 @@ echo "   Applying CSS customizations..."
 # Reload VS Code to apply changes
 echo -e "${GREEN}✓ Setup complete!${NC}"
 echo ""
-echo "🎉 Islands Dark theme has been installed!"
+echo "🎉 ndu-dark theme has been installed!"
 echo "   VS Code will now reload to apply the custom UI style."
 echo ""
 
 # Use AppleScript on macOS to show a notification and reload VS Code
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    osascript -e 'display notification "Islands Dark theme installed successfully!" with title "🏝️ Islands Dark"' 2>/dev/null || true
+    osascript -e 'display notification "ndu-dark theme installed successfully!" with title "🌙 ndu-dark"' 2>/dev/null || true
 fi
 
 echo "   Reloading VS Code..."
 code --reload-window 2>/dev/null || code . 2>/dev/null || true
 
 echo ""
-echo -e "${GREEN}Done! 🏝️${NC}"
+echo -e "${GREEN}Done! 🌙${NC}"

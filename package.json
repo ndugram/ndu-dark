@@ -1,7 +1,7 @@
 {
-  "name": "islands-dark",
-  "displayName": "Islands Dark",
-  "description": "A dark color theme inspired by JetBrains Islands Dark — deep backgrounds, warm syntax highlighting, and a clean modern aesthetic.",
+  "name": "ndu-dark",
+  "displayName": "ndu-dark",
+  "description": "A dark color theme with deep backgrounds, warm syntax highlighting, and a clean modern aesthetic.",
   "version": "1.0.0",
   "publisher": "bwya77",
   "license": "MIT",
@@ -14,8 +14,7 @@
   "keywords": [
     "dark",
     "theme",
-    "islands",
-    "jetbrains",
+    "ndu",
     "color theme"
   ],
   "icon": "icon.png",
@@ -26,9 +25,9 @@
   "contributes": {
     "themes": [
       {
-        "label": "Islands Dark",
+        "label": "ndu-dark",
         "uiTheme": "vs-dark",
-        "path": "./themes/islands-dark.json"
+        "path": "./themes/ndu-dark.json"
       }
     ]
   }

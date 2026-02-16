@@ -1,18 +1,18 @@
-# Islands Dark Theme Bootstrap Installer for Windows
+# ndu-dark Theme Bootstrap Installer for Windows
 # One-liner: irm https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.ps1 | iex
 
 param()
 
 $ErrorActionPreference = "Stop"
 
-echo "🏝️  Islands Dark Theme Bootstrap Installer"
+echo "🌙 ndu-dark Theme Bootstrap Installer"
 echo "=========================================="
 echo ""
 
 $RepoUrl = "https://github.com/bwya77/vscode-dark-islands.git"
-$InstallDir = "$env:TEMP\islands-dark-temp"
+$InstallDir = "$env:TEMP\ndu-dark-temp"
 
-echo "📥 Step 1: Downloading Islands Dark..."
+echo "📥 Step 1: Downloading ndu-dark..."
 echo "   Repository: $RepoUrl"
 
 # Remove old temp directory if exists
@@ -24,7 +24,7 @@ if (Test-Path $InstallDir) {
 try {
     git clone $RepoUrl $InstallDir --quiet
 } catch {
-    echo "❌ Failed to download Islands Dark"
+    echo "❌ Failed to download ndu-dark"
     echo "   Make sure Git is installed: https://git-scm.com/download/win"
     exit 1
 }
@@ -57,4 +57,4 @@ if ($remove -eq 'y' -or $remove -eq 'Y') {
 }
 
 echo ""
-echo "🎉 Done! Enjoy your Islands Dark theme!"
+echo "🎉 Done! Enjoy your ndu-dark theme!"

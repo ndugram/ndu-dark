@@ -2,10 +2,10 @@
 
 set -e
 
-# Islands Dark Theme Bootstrap Installer
+# ndu-dark Theme Bootstrap Installer
 # One-liner: curl -fsSL https://raw.githubusercontent.com/bwya77/vscode-dark-islands/main/bootstrap.sh | bash
 
-echo "🏝️  Islands Dark Theme Bootstrap Installer"
+echo "🌙 ndu-dark Theme Bootstrap Installer"
 echo "=========================================="
 echo ""
 
@@ -21,7 +21,7 @@ else
     OS="Linux"
 fi
 
-echo "📥 Step 1: Downloading Islands Dark..."
+echo "📥 Step 1: Downloading ndu-dark..."
 echo "   Repository: $REPO_URL"
 
 # Remove old temp directory if exists
@@ -29,7 +29,7 @@ rm -rf "$INSTALL_DIR"
 
 # Clone repository
 if ! git clone "$REPO_URL" "$INSTALL_DIR" --quiet; then
-    echo "❌ Failed to download Islands Dark"
+    echo "❌ Failed to download ndu-dark"
     exit 1
 fi
 
@@ -62,4 +62,4 @@ else
 fi
 
 echo ""
-echo -e "🎉 Done! Enjoy your Islands Dark theme!"
+echo -e "🎉 Done! Enjoy your ndu-dark theme!"

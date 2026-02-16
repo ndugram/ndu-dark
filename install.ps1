@@ -1,10 +1,10 @@
-# Islands Dark Theme Installer for Windows
+# ndu-dark Theme Installer for Windows
 
 param()
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "Islands Dark Theme Installer for Windows" -ForegroundColor Cyan
+Write-Host "ndu-dark Theme Installer for Windows" -ForegroundColor Cyan
 Write-Host "================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -44,10 +44,10 @@ Write-Host "VS Code CLI found" -ForegroundColor Green
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 Write-Host ""
-Write-Host "Step 1: Installing Islands Dark theme extension..."
+Write-Host "Step 1: Installing ndu-dark theme extension..."
 
 # Install by copying to VS Code extensions directory
-$extDir = "$env:USERPROFILE\.vscode\extensions\bwya77.islands-dark-1.0.0"
+$extDir = "$env:USERPROFILE\.vscode\extensions\ndu-dark-1.0.0"
 if (Test-Path $extDir) {
     Remove-Item -Recurse -Force $extDir
 }
@@ -132,7 +132,7 @@ if (Test-Path $settingsFile) {
         $existingRaw = Get-Content $settingsFile -Raw
         $existingSettings = (Strip-Jsonc $existingRaw) | ConvertFrom-Json
 
-        # Merge settings - Islands Dark settings take precedence
+        # Merge settings - ndu-dark settings take precedence
         $mergedSettings = @{}
         $existingSettings.PSObject.Properties | ForEach-Object {
             $mergedSettings[$_.Name] = $_.Value
@@ -170,7 +170,7 @@ Write-Host ""
 Write-Host "Step 5: Enabling Custom UI Style..."
 
 # Check if this is the first run
-$firstRunFile = Join-Path $scriptDir ".islands_dark_first_run"
+$firstRunFile = Join-Path $scriptDir ".ndu_dark_first_run"
 if (-not (Test-Path $firstRunFile)) {
     New-Item -ItemType File -Path $firstRunFile | Out-Null
     Write-Host ""
@@ -185,7 +185,7 @@ if (-not (Test-Path $firstRunFile)) {
 Write-Host "   Applying CSS customizations..."
 
 Write-Host ""
-Write-Host "Islands Dark theme has been installed!" -ForegroundColor Green
+Write-Host "ndu-dark theme has been installed!" -ForegroundColor Green
 Write-Host "   VS Code will now reload to apply the custom UI style."
 Write-Host ""
 
