@@ -79,6 +79,15 @@
    },
    ".explorer-folders-view": {
       "transform": "none !important",
+      "margin-top": "0 !important",
+      "padding-top": "4px !important"
+   },
+   ".part.sidebar .split-view-view": {
+      "transform": "none !important",
+      "margin-top": "0 !important"
+   },
+   ".part.sidebar > .split-view-view": {
+      "transform": "none !important",
       "margin-top": "0 !important"
    },
    ".part.sidebar .header": {
@@ -463,7 +472,11 @@
    },
    ".scrollbar .slider": {
       "border-radius": "9999px !important",
-      "transition": "opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important"
+      "transition": "opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important",
+      "opacity": "0 !important"
+   },
+   ".scrollbar:hover .slider": {
+      "opacity": "0 !important"
    },
    ".monaco-count-badge": {
       "border-radius": "9999px !important",
