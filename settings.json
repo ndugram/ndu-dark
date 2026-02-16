@@ -45,7 +45,13 @@
    ".part.sidebar .content": {
       "width": "100% !important",
       "padding-left": "4px !important",
-      "margin-left": "0 !important"
+      "margin-left": "0 !important",
+      "margin-top": "0 !important",
+      "transform": "none !important"
+   },
+   ".part.sidebar > .content": {
+      "margin-top": "0 !important",
+      "transform": "none !important"
    },
    ".part.sidebar .welcome-view-content": {
       "max-width": "100% !important",
