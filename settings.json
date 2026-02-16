@@ -257,7 +257,7 @@
    },
     ".part.activitybar": {
        "background": "#121216 !important",
-       "margin": "8px 20px 30px 12px",
+       "margin": "8px 8px 30px 12px",
       "width": "48px !important",
       "min-width": "48px !important"
    },
@@ -452,16 +452,8 @@
       "box-shadow": "inset 0 0 0 1px rgba(255,255,255,0.06) !important"
    },
    ".scrollbar .slider": {
-      "display": "none !important"
-   },
-   ".monaco-scrollable-element > .scrollbar > .slider": {
-      "display": "none !important"
-   },
-   ".monaco-scrollable-element > .scrollbar.vertical > .slider": {
-      "display": "none !important"
-   },
-   ".monaco-scrollable-element > .scrollbar.horizontal > .slider": {
-      "display": "none !important"
+      "border-radius": "9999px !important",
+      "transition": "opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important"
    },
    ".monaco-count-badge": {
       "border-radius": "9999px !important",
