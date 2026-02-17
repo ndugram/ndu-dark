@@ -21,10 +21,16 @@
       "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
    },
    ".part.sidebar .composite.title": {
-      "padding": "12px 20px 0 0 !important"
+      "padding": "4px 20px 0 0 !important",
+      "margin-top": "-8px !important",
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".part.sidebar > .composite.title": {
-      "padding": "8px 20px 0 0 !important"
+      "padding": "4px 20px 0 0 !important",
+      "margin-top": "-8px !important",
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".part.sidebar .title-label h2": {
       "font-family": "'Bear Sans UI Heading', sans-serif !important",
@@ -46,39 +52,65 @@
    },
    ".part.sidebar .welcome-view-content": {
       "max-width": "100% !important",
-      "box-sizing": "border-box !important"
+      "box-sizing": "border-box !important",
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".part.sidebar .pane-header": {
       "border-radius": "6px !important",
-      "outline-offset": "-1px !important"
+      "outline-offset": "-1px !important",
+      "padding-top": "2px !important",
+      "margin-top": "-8px !important",
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".part.sidebar > .pane-header": {
+      "padding-top": "2px !important",
+      "margin-top": "-8px !important",
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".explorer-viewlet .split-view-container": {
       "transform": "translateY(-22px) !important",
-      "padding-top": "16px !important"
+      "padding-top": "16px !important",
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".explorer-folders-view .monaco-list-rows": {
       "transform": "translate3d(0px, 0px, 0px) scaleY(1.15) !important",
-      "transform-origin": "top left !important"
+      "transform-origin": "top left !important",
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".explorer-folders-view .monaco-tl-row": {
       "transform": "scaleY(0.87) !important",
-      "transform-origin": "top left !important"
+      "transform-origin": "top left !important",
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".part.sidebar .split-view-view": {
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".part.sidebar > .split-view-view": {
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".part.sidebar .header": {
       "padding-right": "8px !important",
-      "padding-top": "10px !important"
+      "padding-top": "2px !important",
+      "margin-top": "-8px !important",
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".part.sidebar .label-name": {
       "font-size": "13px !important"
    },
    ".part.sidebar .pane-header .title": {
-      "font-size": "10px !important"
+      "font-size": "10px !important",
+      "margin-top": "-8px !important",
+      "position": "relative !important",
+      "top": "0 !important"
    },
    ".part.sidebar .monaco-list-row": {
       "border-radius": "6px !important",
