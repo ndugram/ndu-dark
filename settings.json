@@ -21,7 +21,7 @@
       "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
    },
    ".part.sidebar .composite.title": {
-      "padding": "8px 20px 0 0 !important"
+      "padding": "12px 20px 0 0 !important"
    },
    ".part.sidebar > .composite.title": {
       "padding": "8px 20px 0 0 !important"
@@ -55,7 +55,8 @@
    ".part.sidebar > .pane-header": {
    },
    ".explorer-viewlet .split-view-container": {
-      "transform": "translateY(-22px) !important"
+      "transform": "translateY(-22px) !important",
+      "padding-top": "16px !important"
    },
    ".explorer-folders-view .monaco-list-rows": {
       "transform": "translate3d(0px, 0px, 0px) scaleY(1.15) !important",
