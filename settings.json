@@ -80,6 +80,9 @@
    ".explorer-folders-view": {
       "transform": "none !important",
       "margin-top": "0 !important",
+      "padding-top": "8px !important"
+   },
+   ".explorer-folders-view .monaco-list": {
       "padding-top": "4px !important"
    },
    ".part.sidebar .split-view-view": {
