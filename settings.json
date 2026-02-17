@@ -21,16 +21,10 @@
       "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
    },
    ".part.sidebar .composite.title": {
-      "padding": "4px 20px 0 0 !important",
-      "margin-top": "-8px !important",
-      "position": "relative !important",
-      "top": "0 !important"
+      "padding": "12px 20px 0 0 !important"
    },
    ".part.sidebar > .composite.title": {
-      "padding": "4px 20px 0 0 !important",
-      "margin-top": "-8px !important",
-      "position": "relative !important",
-      "top": "0 !important"
+      "padding": "12px 20px 0 0 !important"
    },
    ".part.sidebar .title-label h2": {
       "font-family": "'Bear Sans UI Heading', sans-serif !important",
@@ -42,75 +36,44 @@
    ".part.sidebar .content": {
       "width": "100% !important",
       "padding-left": "4px !important",
-      "margin-left": "0 !important",
-      "margin-top": "0 !important",
-      "transform": "none !important"
+      "padding-top": "8px !important",
+      "margin-left": "0 !important"
    },
    ".part.sidebar > .content": {
-      "margin-top": "0 !important",
-      "transform": "none !important"
+      "padding-top": "8px !important"
    },
    ".part.sidebar .welcome-view-content": {
       "max-width": "100% !important",
-      "box-sizing": "border-box !important",
-      "position": "relative !important",
-      "top": "0 !important"
+      "box-sizing": "border-box !important"
    },
    ".part.sidebar .pane-header": {
       "border-radius": "6px !important",
       "outline-offset": "-1px !important",
-      "padding-top": "2px !important",
-      "margin-top": "-8px !important",
-      "position": "relative !important",
-      "top": "0 !important"
+      "padding-top": "12px !important"
    },
    ".part.sidebar > .pane-header": {
-      "padding-top": "2px !important",
-      "margin-top": "-8px !important",
-      "position": "relative !important",
-      "top": "0 !important"
+      "padding-top": "12px !important"
    },
    ".explorer-viewlet .split-view-container": {
-      "transform": "translateY(-22px) !important",
-      "padding-top": "16px !important",
-      "position": "relative !important",
-      "top": "0 !important"
+      "padding-top": "8px !important"
    },
    ".explorer-folders-view .monaco-list-rows": {
-      "transform": "translate3d(0px, 0px, 0px) scaleY(1.15) !important",
-      "transform-origin": "top left !important",
-      "position": "relative !important",
-      "top": "0 !important"
    },
    ".explorer-folders-view .monaco-tl-row": {
-      "transform": "scaleY(0.87) !important",
-      "transform-origin": "top left !important",
-      "position": "relative !important",
-      "top": "0 !important"
    },
    ".part.sidebar .split-view-view": {
-      "position": "relative !important",
-      "top": "0 !important"
    },
    ".part.sidebar > .split-view-view": {
-      "position": "relative !important",
-      "top": "0 !important"
    },
    ".part.sidebar .header": {
       "padding-right": "8px !important",
-      "padding-top": "2px !important",
-      "margin-top": "-8px !important",
-      "position": "relative !important",
-      "top": "0 !important"
+      "padding-top": "12px !important"
    },
    ".part.sidebar .label-name": {
       "font-size": "13px !important"
    },
    ".part.sidebar .pane-header .title": {
-      "font-size": "10px !important",
-      "margin-top": "-8px !important",
-      "position": "relative !important",
-      "top": "0 !important"
+      "font-size": "10px !important"
    },
    ".part.sidebar .monaco-list-row": {
       "border-radius": "6px !important",
@@ -153,7 +116,8 @@
       "border-left": "1px solid rgba(255,255,255,0.08) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.03) !important",
       "border-right": "1px solid rgba(255,255,255,0.03) !important",
-      "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
+      "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important",
+      "padding-top": "8px !important"
    },
    ".workbench:not(.sidebar-visible) .part.editor": {
       "margin-left": "20px !important"
@@ -244,7 +208,6 @@
       "margin-bottom": "22px !important"
    },
    ".extensions-search-container": {
-      "transform": "translateX(-6px) !important"
    },
    ".extensions-search-container .suggest-input-container": {
       "border-radius": "9999px !important",
@@ -379,7 +342,6 @@
       "color": "#9a9ea5 !important"
    },
    ".part.statusbar .items-container": {
-      "margin-top": "-2px !important"
    },
    ".monaco-icon-label.file-icon::before": {
       "filter": "drop-shadow(0 0 2.5px currentColor)",
