@@ -48,7 +48,7 @@ If you prefer to clone first:
 #### macOS/Linux
 
 ```bash
-git clone https://github.com/ndugram/ndu-dark.git
+git clone https://github.com/ndugram/ndu-dark.git ndu-dark
 cd ndu-dark
 ./install.sh
 ```
@@ -56,7 +56,7 @@ cd ndu-dark
 #### Windows
 
 ```powershell
-git clone https://github.com/ndugram/ndu-dark.git
+git clone https://github.com/ndugram/ndu-dark.git ndu-dark
 cd ndu-dark
 .\install.ps1
 ```
