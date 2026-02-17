@@ -9,14 +9,18 @@
   "editor.minimap.showSlider": "always",
   "custom-ui-style.stylesheet": {
    ".monaco-workbench": {
-      "background-color": "#121216 !important"
+      "background-color": "#121216 !important",
+      "padding": "8px 8px 8px 16px !important"
    },
    ".part.sidebar": {
       "font-family": "'Bear Sans UI', sans-serif !important",
-      "margin": "8px 8px 8px 24px",
+      "margin": "0 !important",
       "border-radius": "18px !important",
       "overflow": "hidden !important",
-      "border": "none !important",
+      "border-top": "1px solid rgba(255,255,255,0.12) !important",
+      "border-left": "1px solid rgba(255,255,255,0.08) !important",
+      "border-bottom": "1px solid rgba(255,255,255,0.03) !important",
+      "border-right": "1px solid rgba(255,255,255,0.03) !important",
       "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
    },
    ".part.sidebar .composite.title": {
@@ -107,20 +111,23 @@
       "outline": "none !important"
    },
     ".part.editor": {
-       "margin": "8px",
+       "margin": "0 !important",
       "border-radius": "18px !important",
       "overflow": "hidden !important",
       "border-top": "1px solid rgba(255,255,255,0.12) !important",
       "border-left": "1px solid rgba(255,255,255,0.08) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.03) !important",
       "border-right": "1px solid rgba(255,255,255,0.03) !important",
-      "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
+      "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important",
+      "padding-top": "8px !important"
    },
    ".workbench:not(.sidebar-visible) .part.editor": {
-      "margin-left": "20px !important"
+      "margin-left": "0 !important",
+      "padding-left": "20px !important"
    },
    ".workbench.sidebar-hidden .part.editor": {
-      "margin-left": "20px !important"
+      "margin-left": "0 !important",
+      "padding-left": "20px !important"
    },
    ".editor-actions": {
       "padding-right": "20px !important",
@@ -230,12 +237,12 @@
       "border-radius": "9999px !important"
    },
    ".part.panel.bottom": {
-      "margin": "0 8px",
+      "margin": "0 !important",
       "border-radius": "12px",
-      "border-top": "1px solid rgba(255,255,255,0.1) !important",
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
-      "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
-      "border-right": "1px solid rgba(255,255,255,0.02) !important",
+      "border-top": "1px solid rgba(255,255,255,0.12) !important",
+      "border-left": "1px solid rgba(255,255,255,0.08) !important",
+      "border-bottom": "1px solid rgba(255,255,255,0.03) !important",
+      "border-right": "1px solid rgba(255,255,255,0.03) !important",
       "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
    },
    ".part.panel.bottom .message-box-container": {
@@ -339,6 +346,7 @@
       "color": "#9a9ea5 !important"
    },
    ".part.statusbar .items-container": {
+      "margin-top": "0 !important"
    },
    ".monaco-icon-label.file-icon::before": {
       "filter": "drop-shadow(0 0 2.5px currentColor)",
@@ -368,8 +376,8 @@
       "border-radius": "9999px !important"
    },
    ".notifications-toasts": {
-      "margin-right": "8px !important",
-      "margin-bottom": "8px !important"
+      "margin-right": "0 !important",
+      "margin-bottom": "0 !important"
    },
    ".notification-toast": {
       "border-radius": "12px !important",
@@ -405,13 +413,13 @@
       "overflow": "hidden !important"
    },
    ".part.auxiliarybar": {
-      "margin": "8px 20px 0 8px",
+      "margin": "0 !important",
       "border-radius": "18px !important",
       "overflow": "hidden !important",
-      "border-top": "1px solid rgba(255,255,255,0.1) !important",
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
-      "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
-      "border-right": "1px solid rgba(255,255,255,0.02) !important",
+      "border-top": "1px solid rgba(255,255,255,0.12) !important",
+      "border-left": "1px solid rgba(255,255,255,0.08) !important",
+      "border-bottom": "1px solid rgba(255,255,255,0.03) !important",
+      "border-right": "1px solid rgba(255,255,255,0.03) !important",
       "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
    },
    ".part.auxiliarybar .composite.title": {
