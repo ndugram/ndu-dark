@@ -16,7 +16,6 @@
       "margin": "8px 8px 8px 24px",
       "border-radius": "18px !important",
       "overflow": "hidden !important",
-      "max-height": "calc(100% - 16px) !important",
       "border": "none !important",
       "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
    },
@@ -108,16 +107,14 @@
       "outline": "none !important"
    },
     ".part.editor": {
-       "margin": "8px 8px 8px 8px",
+       "margin": "8px",
       "border-radius": "18px !important",
       "overflow": "hidden !important",
-      "max-height": "calc(100% - 16px) !important",
       "border-top": "1px solid rgba(255,255,255,0.12) !important",
       "border-left": "1px solid rgba(255,255,255,0.08) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.03) !important",
       "border-right": "1px solid rgba(255,255,255,0.03) !important",
-      "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important",
-      "padding-top": "8px !important"
+      "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
    },
    ".workbench:not(.sidebar-visible) .part.editor": {
       "margin-left": "20px !important"
@@ -411,7 +408,6 @@
       "margin": "8px 20px 0 8px",
       "border-radius": "18px !important",
       "overflow": "hidden !important",
-      "max-height": "calc(100% - 16px) !important",
       "border-top": "1px solid rgba(255,255,255,0.1) !important",
       "border-left": "1px solid rgba(255,255,255,0.06) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
@@ -425,7 +421,6 @@
       "width": "calc(100% - 20px) !important"
    },
    ".part.auxiliarybar .split-view-view": {
-      "max-height": "calc(100% - 24px) !important"
    },
    ".part.auxiliarybar .header": {
       "padding-left": "20px !important"
