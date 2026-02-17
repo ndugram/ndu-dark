@@ -133,9 +133,9 @@
       "outline": "none !important"
    },
     ".part.editor": {
-       "margin": "8px 8px 0 8px",
+       "margin": "8px 8px 8px 8px",
       "border-radius": "18px !important",
-      "overflow": "visible !important",
+      "overflow": "hidden !important",
       "max-height": "calc(100% - 16px) !important",
       "border-top": "1px solid rgba(255,255,255,0.12) !important",
       "border-left": "1px solid rgba(255,255,255,0.08) !important",
@@ -152,7 +152,8 @@
    ".tabs-container": {
       "background-image": "linear-gradient(to top, #25262a 1px, transparent 1px) !important",
       "background-repeat": "no-repeat !important",
-      "background-position": "bottom !important"
+      "background-position": "bottom !important",
+      "padding-top": "6px !important"
    },
    ".tab": {
       "margin": "0 !important",
