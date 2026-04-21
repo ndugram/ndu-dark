@@ -1,85 +1,107 @@
+<div align="center">
+
 # ndu-dark
 
-> A dark VS Code theme with floating glass panels, refined typography, and JetBrains-inspired aesthetics.
+**A VS Code theme that looks like PyCharm stayed up all night.**
 
-![Version](https://img.shields.io/badge/version-1.1.0-blue?style=flat-square&color=548af7)
-![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
-![VS Code](https://img.shields.io/badge/VS%20Code-1.60%2B-007ACC?style=flat-square&logo=visualstudiocode)
+Deep dark canvas. Floating glass panels. Accent-lit selections. Warm syntax.
 
-> **Work in progress** — actively refined.
+<br/>
+
+[![Version](https://img.shields.io/badge/version-1.1.0-548af7?style=for-the-badge&labelColor=1a1b1e)](https://github.com/ndugram/ndu-dark/releases)
+[![License](https://img.shields.io/badge/license-MIT-3fb950?style=for-the-badge&labelColor=1a1b1e)](LICENSE)
+[![VS Code](https://img.shields.io/badge/VS%20Code-1.60+-007ACC?style=for-the-badge&labelColor=1a1b1e&logo=visualstudiocode&logoColor=007ACC)](https://code.visualstudio.com)
+
+<br/>
+
+<!-- Replace with actual screenshot -->
+<!-- ![ndu-dark preview](preview/preview.png) -->
+
+</div>
 
 ---
 
-## Preview
+## What it looks like
 
-| Element | Style |
-|---------|-------|
-| Canvas | `#121216` — deep, near-black |
-| Surface | `#181a1d` — floating panels |
-| Accent | `#548af7` — selection, active states |
-| Editor font | IBM Plex Mono |
-| Terminal font | FiraCode Nerd Font Mono |
-| UI font | Bear Sans UI |
+Every panel floats. Every border catches light from the top-left. Every selected item glows with `#548af7`. Nothing is flat. Nothing is noisy.
+
+```
+Canvas   #121216  ████  near-black void behind all panels
+Surface  #181a1d  ████  panel background, slightly lifted
+Accent   #548af7  ████  selections, active tabs, focus rings
+```
+
+| Font | Used for |
+|------|----------|
+| IBM Plex Mono | Editor |
+| FiraCode Nerd Font Mono | Terminal |
+| Bear Sans UI | UI chrome, tabs, sidebar |
 
 ---
 
 ## Features
 
-**Panels**
-- Floating sidebar, editor, terminal, and auxiliary bar — each a glass island
-- Directional light borders: brighter top/left edge, subtle bottom/right
-- 24px rounded corners on all major panels
+<details>
+<summary><strong>Floating panels</strong></summary>
 
-**Activity bar**
+- Sidebar, editor, terminal, right sidebar — each is an independent glass island
+- Directional light simulation: `rgba(255,255,255,0.1)` top border, `rgba(255,255,255,0.02)` bottom
+- `24px` rounded corners on all major panels
+- `6px` gap between panels, showing the canvas beneath
+
+</details>
+
+<details>
+<summary><strong>Activity bar</strong></summary>
+
 - Pill-shaped container with glass inset shadow
-- Accent-tinted circular indicator for active item (JetBrains-style)
-- Oversized 28px icons for clarity
+- Active icon: accent-tinted circular indicator — no default VS Code line indicator
+- `28px` icons for clarity at any DPI
+- Badge counters scaled to `0.8` and pinned top-right
 
-**Tabs**
-- Accent color indicator line at top of active tab (JetBrains-style)
-- Tab close buttons fade in on hover
-- Bear Sans UI font
+</details>
 
-**Sidebar / File tree**
-- Accent-colored left border on selected items
-- Smooth gradient hover and focus states
-- Rounded list rows with proper margins
+<details>
+<summary><strong>Tabs</strong></summary>
 
-**Command palette**
-- Glass border, deep shadow, rounded rows
-- Accent-tinted focused row
+- Active tab: `#548af7` indicator line at top — JetBrains-style
+- Close button invisible until hover, fades in smoothly
+- Bear Sans UI font across all tabs
+- No tab borders — tabs separated by subtle box-shadows only
 
-**Breadcrumbs**
-- Hidden by default, fade in on hover
+</details>
 
-**Status bar**
-- Dimmed text that brightens on hover with smooth transition
+<details>
+<summary><strong>Sidebar / File tree</strong></summary>
 
-**Other**
-- Pill-shaped scrollbar thumbs with fade
-- Minimap fades to 60%, full opacity on hover
-- Color-matched file icon glow via `drop-shadow`
-- Warm syntax highlighting: JS/TS, Python, Go, Rust, HTML/CSS, JSON, YAML, Markdown
+- Selected item: blue left-border accent + subtle gradient background
+- Focused + selected: stronger accent, full `#548af7` left bar
+- Hover: soft gradient, no jarring color flash
+- All rows: `6px` rounded, `4px` horizontal margins
 
----
+</details>
 
-## Requirements
+<details>
+<summary><strong>Everything else</strong></summary>
 
-Before installing, have these ready:
+- **Command palette** — glass borders, deep shadow, accent-tinted focused row
+- **Breadcrumbs** — hidden until hover, 400ms fade
+- **Status bar** — dimmed text, brightens on hover
+- **Minimap** — 60% opacity, full on hover
+- **Scrollbars** — pill-shaped thumbs with opacity transition
+- **File icons** — color-matched glow via `drop-shadow`
+- **Notifications / dialogs** — `14px` rounded, glass borders
+- **Syntax** — warm highlights for JS/TS, Python, Go, Rust, HTML/CSS, JSON, YAML, Markdown
 
-| Dependency | Where to get |
-|------------|-------------|
-| VS Code 1.60+ | [code.visualstudio.com](https://code.visualstudio.com) |
-| IBM Plex Mono | [fonts.google.com](https://fonts.google.com/specimen/IBM+Plex+Mono) |
-| FiraCode Nerd Font | [nerdfonts.com](https://www.nerdfonts.com) |
-
-The install script handles everything else (Custom UI Style extension, Bear Sans UI fonts, settings merge).
+</details>
 
 ---
 
-## Installation
+## Install
 
-### One-liner (recommended)
+### One-liner
+
+> Installs the theme, Custom UI Style extension, Bear Sans UI fonts, and merges settings automatically.
 
 **macOS / Linux**
 ```bash
@@ -91,80 +113,117 @@ curl -fsSL https://raw.githubusercontent.com/ndugram/ndu-dark/main/bootstrap.sh 
 irm https://raw.githubusercontent.com/ndugram/ndu-dark/main/bootstrap.ps1 | iex
 ```
 
-### Manual clone
+### Manual
 
-**macOS / Linux**
 ```bash
-git clone https://github.com/ndugram/ndu-dark.git ndu-dark
+git clone https://github.com/ndugram/ndu-dark.git
 cd ndu-dark
-./install.sh
+./install.sh          # macOS / Linux
+# .\install.ps1       # Windows
 ```
 
-**Windows**
-```powershell
-git clone https://github.com/ndugram/ndu-dark.git ndu-dark
-cd ndu-dark
-.\install.ps1
-```
+The script does:
+1. Copies extension to `~/.vscode/extensions/ndu-dark-1.1.0/`
+2. Installs [Custom UI Style](https://marketplace.visualstudio.com/items?itemName=subframe7536.custom-ui-style) via `code --install-extension`
+3. Installs Bear Sans UI fonts system-wide
+4. Deep-merges `settings.json` into your VS Code config (non-destructive)
+5. Reloads VS Code
 
-The scripts automatically:
-- Install the ndu-dark color theme extension
-- Install the [Custom UI Style](https://marketplace.visualstudio.com/items?itemName=subframe7536.custom-ui-style) extension
-- Install Bear Sans UI fonts
-- Merge `settings.json` into your VS Code config
-- Reload VS Code
+### Prerequisites
+
+Install these manually before running the script:
+
+| Font | Link |
+|------|------|
+| IBM Plex Mono | [fonts.google.com/specimen/IBM+Plex+Mono](https://fonts.google.com/specimen/IBM+Plex+Mono) |
+| FiraCode Nerd Font | [nerdfonts.com](https://www.nerdfonts.com/font-downloads) |
 
 ---
 
-## What the CSS customizations do
+## CSS customizations reference
 
-| Component | What changes |
-|-----------|-------------|
-| Canvas | `#121216` background behind all floating panels |
-| Sidebar | 24px rounded corners, glass borders, accent selection states |
-| Editor | 24px rounded corners, glass borders, accent tab indicator |
-| Activity bar | Pill-shaped, accent-tinted active icon indicator |
-| Command center | Pill-shaped title bar widget with glass effect |
-| Bottom panel | Floating with inner shadow, rounded terminal corners |
-| Right sidebar | 24px rounded corners, glass borders |
-| Notifications | 14px rounded, glass borders, deep shadow |
-| Command palette | 14px rounded, accent-tinted focused rows |
-| Tabs | Accent top-line on active tab, fade-in close button |
-| Scrollbars | Pill-shaped thumbs, opacity transition |
-| Breadcrumbs | Hidden until hover, smooth fade |
-| Status bar | Dimmed until hover |
-| File icons | Color-matched glow via `drop-shadow` |
+The floating panel look requires [Custom UI Style](https://marketplace.visualstudio.com/items?itemName=subframe7536.custom-ui-style). The `settings.json` in this repo provides all rules.
+
+| Selector | Effect |
+|----------|--------|
+| `.monaco-workbench` | CSS variable definitions — edit here to retheme everything |
+| `.part.sidebar` | Floating glass panel, rounded corners, accent selection |
+| `.part.editor` | Floating glass panel, accent tab top indicator |
+| `.part.activitybar` | Pill container, accent active icon |
+| `.part.panel.bottom` | Floating terminal/output panel |
+| `.part.auxiliarybar` | Right sidebar, same glass style |
+| `.quick-input-widget` | Command palette — glass, deep shadow |
+| `.tabs-container` | Tab bar bottom border via background-image trick |
+| `.tab.active` | `#548af7` top indicator via box-shadow |
+| `.monaco-breadcrumbs` | Hidden until hover |
+| `.scrollbar .slider` | Pill shape, opacity transition |
+
+### CSS variables
+
+All values in one place — `".monaco-workbench"` block in `settings.json`:
+
+```json
+"--islands-panel-radius": "24px"
+"--islands-widget-radius": "14px"
+"--islands-input-radius": "12px"
+"--islands-item-radius": "6px"
+"--islands-panel-gap": "6px"
+"--islands-bg-canvas": "#121216"
+"--islands-bg-surface": "#181a1d"
+"--islands-tab-border": "#25262a"
+"--islands-accent": "#548af7"
+```
 
 ---
 
 ## Troubleshooting
 
-### Changes aren't taking effect
+<details>
+<summary><strong>Changes aren't taking effect</strong></summary>
 
 Cycle the extension:
-1. **Command Palette** → `Custom UI Style: Disable` → Reload
-2. **Command Palette** → `Custom UI Style: Enable` → Reload
+1. `Ctrl+Shift+P` → `Custom UI Style: Disable` → Reload VS Code
+2. `Ctrl+Shift+P` → `Custom UI Style: Enable` → Reload VS Code
 
-### "Corrupt installation" warning
+</details>
 
-Expected after enabling Custom UI Style — VS Code detects the modified `workbench.html`. Dismiss it or select **Don't Show Again**.
+<details>
+<summary><strong>"Your VS Code installation appears to be corrupt"</strong></summary>
 
-### Styles conflict with a previous CSS extension
+Expected. Custom UI Style patches `workbench.html` — VS Code detects the checksum mismatch and warns you. Click **Don't Show Again**. This is cosmetic only; nothing is actually broken.
 
-If you previously used **Custom CSS and JS Loader** (`be5invis.vscode-custom-css`), it may have left stale CSS injected directly into `workbench.html`. Reinstall VS Code to get a clean slate, then use only Custom UI Style.
+</details>
 
-### Font not showing
+<details>
+<summary><strong>Conflict with Custom CSS and JS Loader</strong></summary>
 
-IBM Plex Mono and FiraCode Nerd Font must be installed at the OS level — the install script will remind you if they're missing.
+If you previously used `be5invis.vscode-custom-css`, it may have injected CSS directly into `workbench.html` that persists after disabling. Reinstall VS Code to get a clean `workbench.html`, then use only Custom UI Style.
+
+</details>
+
+<details>
+<summary><strong>Font not rendering</strong></summary>
+
+IBM Plex Mono and FiraCode Nerd Font must be installed at OS level — not just as VS Code settings. The install script checks for them and prints a reminder if missing.
+
+</details>
 
 ---
 
-## Credits
+## Contributing
 
-Inspired by JetBrains IDE new UI (PyCharm, IntelliJ).
+1. Fork → branch → change
+2. Test in VS Code with Custom UI Style enabled
+3. PR with a before/after screenshot if it's a visual change
+
+Easiest place to start: adjust CSS variables in `settings.json` to experiment with spacing, colors, radii.
 
 ---
 
-## License
+<div align="center">
 
-MIT
+Inspired by [JetBrains New UI](https://www.jetbrains.com/help/idea/new-ui.html) — PyCharm, IntelliJ.
+
+MIT © [ndugram](https://github.com/ndugram)
+
+</div>
