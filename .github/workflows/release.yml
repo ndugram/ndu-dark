@@ -9,50 +9,366 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  # ── 1. Check if this version already has a tag ───────────────────────────
+  check:
     runs-on: ubuntu-latest
-
+    outputs:
+      version: ${{ steps.v.outputs.value }}
+      skip: ${{ steps.tag.outputs.exists }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - id: v
+        run: echo "value=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      - id: tag
+        run: |
+          TAG="v${{ steps.v.outputs.value }}"
+          if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "::notice::${TAG} already exists — skipping release"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
 
+  # ── 2. VSIX (VS Code extension package) ─────────────────────────────────
+  vsix:
+    needs: check
+    if: needs.check.outputs.skip == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - run: npm install -g @vscode/vsce && vsce package --no-dependencies
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vsix
+          path: '*.vsix'
 
-      - name: Read version
-        id: version
-        run: echo "value=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+  # ── 3. macOS DMG ─────────────────────────────────────────────────────────
+  macos:
+    needs: check
+    if: needs.check.outputs.skip == 'false'
+    runs-on: macos-latest
+    env:
+      VERSION: ${{ needs.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
 
-      - name: Check if tag already exists
-        id: tag
+      - name: Prepare bundle
         run: |
-          TAG="v${{ steps.version.outputs.value }}"
-          if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-            echo "::notice::Tag ${TAG} already exists — skipping release"
+          mkdir -p dmg-src
+          cp package.json settings.json dmg-src/
+          cp -r themes fonts dmg-src/
+
+      - name: Write merge-settings.js
+        run: |
+          cat > dmg-src/merge-settings.js << 'EOF'
+          const fs = require('fs');
+          const dir  = process.env.NDU_DIR;
+          const dest = process.env.NDU_SETTINGS;
+          function strip(t) {
+            return t.replace(/\/\/(?=(?:[^"\\]|\\.)*$)/gm, '')
+                    .replace(/\/\*[\s\S]*?\*\//g, '')
+                    .replace(/,\s*([}\]])/g, '$1');
+          }
+          const n = JSON.parse(strip(fs.readFileSync(dir + '/settings.json', 'utf8')));
+          let merged = n;
+          if (fs.existsSync(dest)) {
+            const e = JSON.parse(strip(fs.readFileSync(dest, 'utf8')));
+            merged = { ...e, ...n };
+            ['workbench.iconTheme', 'workbench.productIconTheme'].forEach(k => {
+              if (e[k] !== undefined) merged[k] = e[k];
+            });
+            const sk = 'custom-ui-style.stylesheet';
+            if (e[sk] && n[sk]) merged[sk] = { ...e[sk], ...n[sk] };
+          }
+          fs.writeFileSync(dest, JSON.stringify(merged, null, 2));
+          EOF
+
+      - name: Write Install ndu-dark.command
+        run: |
+          cat > "dmg-src/Install ndu-dark.command" << 'EOF'
+          #!/bin/bash
+          DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+          VERSION="__VERSION__"
+          G='\033[0;32m'; Y='\033[1;33m'; N='\033[0m'
+
+          clear
+          echo ""
+          echo "  ◉ ndu-dark ${VERSION} — macOS Installer"
+          echo "  ──────────────────────────────────────────"
+          echo ""
+
+          # 1. VS Code extension
+          EXT_DIR="$HOME/.vscode/extensions/ndu-dark-${VERSION}"
+          rm -rf "$EXT_DIR"
+          mkdir -p "$EXT_DIR/themes"
+          cp "$DIR/package.json" "$EXT_DIR/"
+          cp -r "$DIR/themes/"* "$EXT_DIR/themes/"
+          echo -e "  ${G}✓${N}  Theme extension installed"
+
+          # 2. Custom UI Style
+          if command -v code &>/dev/null; then
+            code --install-extension subframe7536.custom-ui-style --force 2>/dev/null \
+              && echo -e "  ${G}✓${N}  Custom UI Style extension installed" \
+              || echo -e "  ${Y}⚠${N}  Custom UI Style — install from Marketplace manually"
           else
-            echo "exists=false" >> $GITHUB_OUTPUT
-            echo "::notice::Tag ${TAG} not found — will release"
+            echo -e "  ${Y}⚠${N}  'code' CLI not found — VS Code › Cmd+Shift+P › Install 'code' in PATH"
           fi
 
-      - name: Install vsce
-        if: steps.tag.outputs.exists == 'false'
-        run: npm install -g @vscode/vsce
+          # 3. Bear Sans UI fonts
+          cp "$DIR/fonts/"*.otf "$HOME/Library/Fonts/" 2>/dev/null \
+            && echo -e "  ${G}✓${N}  Bear Sans UI fonts installed" \
+            || echo -e "  ${Y}⚠${N}  Font install failed — copy fonts/ to Font Book manually"
 
-      - name: Build VSIX
-        if: steps.tag.outputs.exists == 'false'
-        run: vsce package --no-dependencies
+          # 4. VS Code settings
+          SETTINGS_DIR="$HOME/Library/Application Support/Code/User"
+          SETTINGS_FILE="$SETTINGS_DIR/settings.json"
+          mkdir -p "$SETTINGS_DIR"
+          if command -v node &>/dev/null; then
+            [ -f "$SETTINGS_FILE" ] && cp "$SETTINGS_FILE" "$SETTINGS_FILE.backup"
+            export NDU_DIR="$DIR"
+            export NDU_SETTINGS="$SETTINGS_FILE"
+            node "$DIR/merge-settings.js" \
+              && echo -e "  ${G}✓${N}  VS Code settings merged" \
+              || echo -e "  ${Y}⚠${N}  Settings merge failed — copy settings.json manually"
+          else
+            cp "$DIR/settings.json" "$SETTINGS_FILE"
+            echo -e "  ${G}✓${N}  VS Code settings applied"
+          fi
+
+          echo ""
+          echo -e "  ${G}Done!${N} Reload VS Code to activate ndu-dark."
+          echo "  Cmd+Shift+P › Custom UI Style: Enable › Reload"
+          echo ""
+          read -rsp "  Press any key to close..." -n1
+          echo ""
+          EOF
+
+          sed -i '' "s/__VERSION__/${VERSION}/g" "dmg-src/Install ndu-dark.command"
+          chmod +x "dmg-src/Install ndu-dark.command"
+
+      - name: Create DMG
+        run: |
+          hdiutil create \
+            -volname "ndu-dark ${VERSION}" \
+            -srcfolder dmg-src \
+            -ov -format UDZO \
+            "ndu-dark-${VERSION}-macos.dmg"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: '*.dmg'
+
+  # ── 4. Windows NSIS EXE ──────────────────────────────────────────────────
+  windows:
+    needs: check
+    if: needs.check.outputs.skip == 'false'
+    runs-on: windows-latest
+    env:
+      VERSION: ${{ needs.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install NSIS
+        run: choco install nsis -y
+
+      - name: Prepare dist
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path dist\themes, dist\fonts -Force | Out-Null
+          Copy-Item package.json, settings.json dist\
+          Copy-Item themes\ndu-dark.json dist\themes\
+          Get-ChildItem fonts\*.otf | Copy-Item -Destination dist\fonts\
+
+      - name: Write silent-install.ps1
+        shell: pwsh
+        run: |
+          @'
+          param([string]$InstallDir)
+          $ErrorActionPreference = "Continue"
+
+          function Strip-Jsonc {
+            param([string]$Text)
+            $Text = $Text -replace '(?m)//[^\n]*', ''
+            $Text = $Text -replace '/\*[\s\S]*?\*/', ''
+            $Text = $Text -replace ',(\s*[}\]])', '$1'
+            return $Text
+          }
+
+          Write-Host ""
+          Write-Host "  ndu-dark Installer" -ForegroundColor Cyan
+          Write-Host "  ──────────────────────────────────" -ForegroundColor DarkGray
+          Write-Host ""
+
+          # 1. VS Code extension
+          $pkg = Get-Content "$InstallDir\package.json" -Raw | ConvertFrom-Json
+          $ver = $pkg.version
+          $extDir = "$env:USERPROFILE\.vscode\extensions\ndu-dark-$ver"
+          Remove-Item -Recurse -Force $extDir -ErrorAction SilentlyContinue
+          New-Item -ItemType Directory -Path "$extDir\themes" -Force | Out-Null
+          Copy-Item "$InstallDir\package.json" "$extDir\" -Force
+          Copy-Item "$InstallDir\themes\ndu-dark.json" "$extDir\themes\" -Force
+          Write-Host "  [ok] Theme extension installed" -ForegroundColor Green
+
+          # 2. Custom UI Style
+          $codePath = @(
+            "$env:LOCALAPPDATA\Programs\Microsoft VS Code\bin\code.cmd",
+            "$env:ProgramFiles\Microsoft VS Code\bin\code.cmd",
+            "${env:ProgramFiles(x86)}\Microsoft VS Code\bin\code.cmd"
+          ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+          if (-not $codePath) {
+            $codePath = (Get-Command code -ErrorAction SilentlyContinue)?.Source
+          }
+          if ($codePath) {
+            & $codePath --install-extension subframe7536.custom-ui-style --force 2>&1 | Out-Null
+            Write-Host "  [ok] Custom UI Style installed" -ForegroundColor Green
+          } else {
+            Write-Host "  [!]  VS Code CLI not found — install Custom UI Style manually" -ForegroundColor Yellow
+          }
+
+          # 3. Bear Sans UI fonts
+          $fontDir = "$env:LOCALAPPDATA\Microsoft\Windows\Fonts"
+          New-Item -ItemType Directory -Path $fontDir -Force | Out-Null
+          Get-ChildItem "$InstallDir\fonts\*.otf" | ForEach-Object {
+            Copy-Item $_.FullName $fontDir -Force -ErrorAction SilentlyContinue
+          }
+          Write-Host "  [ok] Fonts installed" -ForegroundColor Green
+
+          # 4. VS Code settings
+          $settingsDir = "$env:APPDATA\Code\User"
+          New-Item -ItemType Directory -Path $settingsDir -Force | Out-Null
+          $settingsFile = "$settingsDir\settings.json"
+          $newSettings = (Strip-Jsonc (Get-Content "$InstallDir\settings.json" -Raw)) | ConvertFrom-Json
+          if (Test-Path $settingsFile) {
+            Copy-Item $settingsFile "$settingsFile.backup" -Force
+            $existing = (Strip-Jsonc (Get-Content $settingsFile -Raw)) | ConvertFrom-Json
+            $merged = @{}
+            $existing.PSObject.Properties | ForEach-Object { $merged[$_.Name] = $_.Value }
+            $newSettings.PSObject.Properties | ForEach-Object { $merged[$_.Name] = $_.Value }
+            @('workbench.iconTheme', 'workbench.productIconTheme') | ForEach-Object {
+              if ($existing.PSObject.Properties[$_]) { $merged[$_] = $existing.$_ }
+            }
+            $sk = 'custom-ui-style.stylesheet'
+            if ($existing.$sk -and $newSettings.$sk) {
+              $ss = @{}
+              $existing.$sk.PSObject.Properties | ForEach-Object { $ss[$_.Name] = $_.Value }
+              $newSettings.$sk.PSObject.Properties | ForEach-Object { $ss[$_.Name] = $_.Value }
+              $merged[$sk] = [PSCustomObject]$ss
+            }
+            [PSCustomObject]$merged | ConvertTo-Json -Depth 100 | Set-Content $settingsFile
+          } else {
+            Copy-Item "$InstallDir\settings.json" $settingsFile
+          }
+          Write-Host "  [ok] VS Code settings merged" -ForegroundColor Green
+
+          if ($codePath) {
+            & $codePath --reload-window 2>&1 | Out-Null
+          }
+          Write-Host ""
+          Write-Host "  Done! Ctrl+Shift+P › Custom UI Style: Enable › Reload" -ForegroundColor Green
+          Write-Host ""
+          '@ | Set-Content dist\silent-install.ps1 -Encoding UTF8
+
+      - name: Write installer.nsi
+        shell: pwsh
+        run: |
+          @'
+          Unicode true
+          !include "MUI2.nsh"
+
+          !define PRODUCT_NAME "ndu-dark"
+          !define PRODUCT_VERSION "VER_PLACEHOLDER"
+
+          Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
+          OutFile "ndu-dark-${PRODUCT_VERSION}-windows.exe"
+          InstallDir "$TEMP\ndu-dark-setup"
+          RequestExecutionLevel user
+          ShowInstDetails show
+
+          !insertmacro MUI_PAGE_WELCOME
+          !insertmacro MUI_PAGE_INSTFILES
+          !insertmacro MUI_PAGE_FINISH
+          !insertmacro MUI_LANGUAGE "English"
+
+          Section "Install" SecMain
+            SetOutPath "$INSTDIR"
+            File "dist\package.json"
+            File "dist\settings.json"
+            File "dist\silent-install.ps1"
+            SetOutPath "$INSTDIR\themes"
+            File "dist\themes\ndu-dark.json"
+            SetOutPath "$INSTDIR\fonts"
+            File "dist\fonts\*.otf"
+            SetOutPath "$INSTDIR"
+
+            DetailPrint "Installing ndu-dark..."
+            nsExec::ExecToLog 'powershell.exe -ExecutionPolicy Bypass -File "$INSTDIR\silent-install.ps1" -InstallDir "$INSTDIR"'
+          SectionEnd
+          '@ | Set-Content installer.nsi -Encoding UTF8
+          (Get-Content installer.nsi) -replace 'VER_PLACEHOLDER', $env:VERSION |
+            Set-Content installer.nsi
+
+      - name: Build EXE
+        run: '& "C:\Program Files (x86)\NSIS\makensis.exe" installer.nsi'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: '*.exe'
+
+  # ── 5. Linux makeself .run ───────────────────────────────────────────────
+  linux:
+    needs: check
+    if: needs.check.outputs.skip == 'false'
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install makeself
+        run: sudo apt-get install -y makeself
+
+      - name: Build .run
+        run: |
+          mkdir -p dist
+          cp package.json settings.json dist/
+          cp -r themes fonts dist/
+          cp install.sh dist/setup.sh
+          chmod +x dist/setup.sh
+          makeself dist \
+            "ndu-dark-${VERSION}-linux.run" \
+            "ndu-dark ${VERSION} installer" \
+            ./setup.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: '*.run'
+
+  # ── 6. Create GitHub release ─────────────────────────────────────────────
+  release:
+    needs: [check, vsix, macos, windows, linux]
+    if: needs.check.outputs.skip == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: dist/
 
       - name: Generate release notes
-        if: steps.tag.outputs.exists == 'false'
-        id: notes
         run: |
-          VERSION="${{ steps.version.outputs.value }}"
+          VERSION="${{ needs.check.outputs.version }}"
           DATE=$(date +"%B %d, %Y")
 
-          # Extract changelog block for this version
           CHANGES=""
           if [ -f CHANGELOG.md ]; then
             CHANGES=$(awk -v ver="$VERSION" '
@@ -64,10 +380,7 @@ jobs:
               found && NF { print }
             ' CHANGELOG.md)
           fi
-
-          if [ -z "$CHANGES" ]; then
-            CHANGES="- See CHANGELOG.md for details."
-          fi
+          [ -z "$CHANGES" ] && CHANGES="- See CHANGELOG.md for details."
 
           cat > release-notes.md << NOTES
           ### What changed
@@ -76,7 +389,23 @@ jobs:
 
           ---
 
-          ### Install
+          ### Downloads
+
+          | Platform | File | What's included |
+          |----------|------|-----------------|
+          | macOS | \`ndu-dark-${VERSION}-macos.dmg\` | Theme · Bear Sans UI fonts · settings · Custom UI Style |
+          | Windows | \`ndu-dark-${VERSION}-windows.exe\` | Theme · Bear Sans UI fonts · settings · Custom UI Style |
+          | Linux | \`ndu-dark-${VERSION}-linux.run\` | Theme · Bear Sans UI fonts · settings · Custom UI Style |
+          | VS Code only | \`ndu-dark-${VERSION}.vsix\` | Color theme only |
+
+          > **macOS** — mount DMG, double-click **Install ndu-dark.command**
+          > **Windows** — run the \`.exe\` installer wizard
+          > **Linux** — \`chmod +x ndu-dark-${VERSION}-linux.run && ./ndu-dark-${VERSION}-linux.run\`
+          > **VSIX** — color theme only, no floating panels or custom fonts
+
+          ---
+
+          ### One-liner (no download needed)
 
           **macOS / Linux**
           \`\`\`bash
@@ -88,39 +417,28 @@ jobs:
           irm https://raw.githubusercontent.com/ndugram/ndu-dark/main/bootstrap.ps1 | iex
           \`\`\`
 
-          **Manual (VSIX only — theme colors, no custom UI)**
-          \`\`\`bash
-          code --install-extension ndu-dark-${VERSION}.vsix
+          ---
+
+          ### Palette
+
+          \`\`\`
+          Canvas   #121216  ████  behind all panels
+          Surface  #181a1d  ████  panel fill
+          Accent   #548af7  ████  selections, active tabs
+          Error    #f75464  ████  errors
           \`\`\`
 
-          > The VSIX installs the color theme only. For floating panels, custom fonts, and all UI tweaks run the bootstrap above.
-
           ---
 
-          ### Color palette
-
-          | Token | Hex | Use |
-          |-------|-----|-----|
-          | Canvas | \`#121216\` | Background behind panels |
-          | Surface | \`#181a1d\` | Panel fill |
-          | Accent | \`#548af7\` | Selections, active tabs, focus |
-          | Error | \`#f75464\` | Errors, destructive actions |
-
-          ---
-
-          *Released ${DATE}*
+          *${DATE}*
           NOTES
 
-      - name: Create GitHub release
-        if: steps.tag.outputs.exists == 'false'
+      - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.version.outputs.value }}
-          name: ndu-dark v${{ steps.version.outputs.value }}
+          tag_name: v${{ needs.check.outputs.version }}
+          name: ndu-dark v${{ needs.check.outputs.version }}
           body_path: release-notes.md
-          files: |
-            *.vsix
-            install.sh
-            install.ps1
+          files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
