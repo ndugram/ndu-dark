@@ -47,7 +47,7 @@ jobs:
           name: vsix
           path: '*.vsix'
 
-  # ── 3. macOS DMG ─────────────────────────────────────────────────────────
+  # ── 3. macOS PKG ─────────────────────────────────────────────────────────
   macos:
     needs: check
     if: needs.check.outputs.skip == 'false'
@@ -57,15 +57,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Prepare bundle
+      - name: Prepare payload
         run: |
-          mkdir -p dmg-src
-          cp package.json settings.json dmg-src/
-          cp -r themes fonts dmg-src/
+          mkdir -p "pkg-root/Library/Application Support/ndu-dark"
+          cp package.json settings.json "pkg-root/Library/Application Support/ndu-dark/"
+          cp -r themes fonts "pkg-root/Library/Application Support/ndu-dark/"
 
       - name: Write merge-settings.js
         run: |
-          cat > dmg-src/merge-settings.js << 'EOF'
+          cat > "pkg-root/Library/Application Support/ndu-dark/merge-settings.js" << 'EOF'
           const fs = require('fs');
           const dir  = process.env.NDU_DIR;
           const dest = process.env.NDU_SETTINGS;
@@ -88,31 +88,44 @@ jobs:
           fs.writeFileSync(dest, JSON.stringify(merged, null, 2));
           EOF
 
-      - name: Write Install ndu-dark.command
+      - name: Write postinstall script
         run: |
-          cat > "dmg-src/Install ndu-dark.command" << 'EOF'
+          mkdir -p pkg-scripts
+          cat > pkg-scripts/postinstall << 'EOF'
           #!/bin/bash
-          DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-          VERSION="__VERSION__"
+          set -e
+
+          CURRENT_USER=$(stat -f "%Su" /dev/console)
+          USER_HOME=$(dscl . -read "/Users/${CURRENT_USER}" NFSHomeDirectory | awk '{print $2}')
+          SRC="/Library/Application Support/ndu-dark"
+          VERSION=$(node -p "require('${SRC}/package.json').version" 2>/dev/null || echo "unknown")
+
           G='\033[0;32m'; Y='\033[1;33m'; N='\033[0m'
 
-          clear
           echo ""
           echo "  ◉ ndu-dark ${VERSION} — macOS Installer"
           echo "  ──────────────────────────────────────────"
           echo ""
 
           # 1. VS Code extension
-          EXT_DIR="$HOME/.vscode/extensions/ndu-dark-${VERSION}"
+          EXT_DIR="${USER_HOME}/.vscode/extensions/ndu-dark-${VERSION}"
           rm -rf "$EXT_DIR"
           mkdir -p "$EXT_DIR/themes"
-          cp "$DIR/package.json" "$EXT_DIR/"
-          cp -r "$DIR/themes/"* "$EXT_DIR/themes/"
+          cp "${SRC}/package.json" "$EXT_DIR/"
+          cp -r "${SRC}/themes/"* "$EXT_DIR/themes/"
+          chown -R "$CURRENT_USER" "$EXT_DIR"
           echo -e "  ${G}✓${N}  Theme extension installed"
 
-          # 2. Custom UI Style
-          if command -v code &>/dev/null; then
-            code --install-extension subframe7536.custom-ui-style --force 2>/dev/null \
+          # 2. Custom UI Style — try known VS Code CLI locations
+          CODE_CLI=""
+          for p in \
+            "/usr/local/bin/code" \
+            "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" \
+            "${USER_HOME}/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"; do
+            [ -x "$p" ] && CODE_CLI="$p" && break
+          done
+          if [ -n "$CODE_CLI" ]; then
+            sudo -u "$CURRENT_USER" "$CODE_CLI" --install-extension subframe7536.custom-ui-style --force 2>/dev/null \
               && echo -e "  ${G}✓${N}  Custom UI Style extension installed" \
               || echo -e "  ${Y}⚠${N}  Custom UI Style — install from Marketplace manually"
           else
@@ -120,23 +133,30 @@ jobs:
           fi
 
           # 3. Bear Sans UI fonts
-          cp "$DIR/fonts/"*.otf "$HOME/Library/Fonts/" 2>/dev/null \
-            && echo -e "  ${G}✓${N}  Bear Sans UI fonts installed" \
-            || echo -e "  ${Y}⚠${N}  Font install failed — copy fonts/ to Font Book manually"
+          FONTS_DIR="${USER_HOME}/Library/Fonts"
+          mkdir -p "$FONTS_DIR"
+          if cp "${SRC}/fonts/"*.otf "$FONTS_DIR/" 2>/dev/null; then
+            chown "$CURRENT_USER" "$FONTS_DIR/"*.otf 2>/dev/null || true
+            echo -e "  ${G}✓${N}  Bear Sans UI fonts installed"
+          else
+            echo -e "  ${Y}⚠${N}  Font install failed — copy fonts/ to Font Book manually"
+          fi
 
           # 4. VS Code settings
-          SETTINGS_DIR="$HOME/Library/Application Support/Code/User"
-          SETTINGS_FILE="$SETTINGS_DIR/settings.json"
+          SETTINGS_DIR="${USER_HOME}/Library/Application Support/Code/User"
+          SETTINGS_FILE="${SETTINGS_DIR}/settings.json"
           mkdir -p "$SETTINGS_DIR"
           if command -v node &>/dev/null; then
-            [ -f "$SETTINGS_FILE" ] && cp "$SETTINGS_FILE" "$SETTINGS_FILE.backup"
-            export NDU_DIR="$DIR"
-            export NDU_SETTINGS="$SETTINGS_FILE"
-            node "$DIR/merge-settings.js" \
+            [ -f "$SETTINGS_FILE" ] && cp "$SETTINGS_FILE" "${SETTINGS_FILE}.backup"
+            export NDU_DIR="${SRC}"
+            export NDU_SETTINGS="${SETTINGS_FILE}"
+            node "${SRC}/merge-settings.js" \
+              && chown "$CURRENT_USER" "$SETTINGS_FILE" \
               && echo -e "  ${G}✓${N}  VS Code settings merged" \
               || echo -e "  ${Y}⚠${N}  Settings merge failed — copy settings.json manually"
           else
-            cp "$DIR/settings.json" "$SETTINGS_FILE"
+            cp "${SRC}/settings.json" "$SETTINGS_FILE"
+            chown "$CURRENT_USER" "$SETTINGS_FILE"
             echo -e "  ${G}✓${N}  VS Code settings applied"
           fi
 
@@ -144,25 +164,23 @@ jobs:
           echo -e "  ${G}Done!${N} Reload VS Code to activate ndu-dark."
           echo "  Cmd+Shift+P › Custom UI Style: Enable › Reload"
           echo ""
-          read -rsp "  Press any key to close..." -n1
-          echo ""
           EOF
+          chmod +x pkg-scripts/postinstall
 
-          sed -i '' "s/__VERSION__/${VERSION}/g" "dmg-src/Install ndu-dark.command"
-          chmod +x "dmg-src/Install ndu-dark.command"
-
-      - name: Create DMG
+      - name: Build PKG
         run: |
-          hdiutil create \
-            -volname "ndu-dark ${VERSION}" \
-            -srcfolder dmg-src \
-            -ov -format UDZO \
-            "ndu-dark-${VERSION}-macos.dmg"
+          pkgbuild \
+            --root pkg-root \
+            --scripts pkg-scripts \
+            --identifier com.ndugram.ndu-dark \
+            --version "${VERSION}" \
+            --install-location / \
+            "ndu-dark-${VERSION}-macos.pkg"
 
       - uses: actions/upload-artifact@v4
         with:
           name: macos
-          path: '*.dmg'
+          path: '*.pkg'
 
   # ── 4. Windows NSIS EXE ──────────────────────────────────────────────────
   windows:
@@ -393,12 +411,12 @@ jobs:
 
           | Platform | File | What's included |
           |----------|------|-----------------|
-          | macOS | \`ndu-dark-${VERSION}-macos.dmg\` | Theme · Bear Sans UI fonts · settings · Custom UI Style |
+          | macOS | \`ndu-dark-${VERSION}-macos.pkg\` | Theme · Bear Sans UI fonts · settings · Custom UI Style |
           | Windows | \`ndu-dark-${VERSION}-windows.exe\` | Theme · Bear Sans UI fonts · settings · Custom UI Style |
           | Linux | \`ndu-dark-${VERSION}-linux.run\` | Theme · Bear Sans UI fonts · settings · Custom UI Style |
           | VS Code only | \`ndu-dark-${VERSION}.vsix\` | Color theme only |
 
-          > **macOS** — mount DMG, double-click **Install ndu-dark.command**
+          > **macOS** — open **PKG**, follow the installer wizard
           > **Windows** — run the \`.exe\` installer wizard
           > **Linux** — \`chmod +x ndu-dark-${VERSION}-linux.run && ./ndu-dark-${VERSION}-linux.run\`
           > **VSIX** — color theme only, no floating panels or custom fonts
