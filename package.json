@@ -2,7 +2,7 @@
   "name": "ndu-dark",
   "displayName": "ndu-dark",
   "description": "A dark color theme with deep backgrounds, warm syntax highlighting, and a clean modern aesthetic.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "publisher": "ndugram",
   "license": "MIT",
   "engines": {
