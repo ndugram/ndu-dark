@@ -52,13 +52,18 @@ fi
 # Cleanup (optional - keeps the temp directory)
 echo ""
 echo "🧹 Step 3: Cleaning up..."
-read -p "   Remove temporary files? (y/n) " -n 1 -r
-echo ""
-if [[ $REPLY =~ ^[Yy]$ ]]; then
+if [ -t 0 ]; then
+    read -p "   Remove temporary files? (y/n) " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        rm -rf "$INSTALL_DIR"
+        echo "✓ Temporary files removed"
+    else
+        echo "   Files kept at: $INSTALL_DIR"
+    fi
+else
     rm -rf "$INSTALL_DIR"
     echo "✓ Temporary files removed"
-else
-    echo "   Files kept at: $INSTALL_DIR"
 fi
 
 echo ""

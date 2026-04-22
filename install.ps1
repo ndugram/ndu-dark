@@ -141,6 +141,14 @@ if (Test-Path $settingsFile) {
             $mergedSettings[$_.Name] = $_.Value
         }
 
+        # Preserve user's icon theme preferences
+        $preserveKeys = @('workbench.iconTheme', 'workbench.productIconTheme')
+        foreach ($key in $preserveKeys) {
+            if ($existingSettings.PSObject.Properties[$key]) {
+                $mergedSettings[$key] = $existingSettings.$key
+            }
+        }
+
         # Deep merge custom-ui-style.stylesheet
         $stylesheetKey = 'custom-ui-style.stylesheet'
         if ($existingSettings.$stylesheetKey -and $newSettings.$stylesheetKey) {

@@ -1,0 +1,125 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - package.json
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Read version
+        id: version
+        run: echo "value=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Check if tag already exists
+        id: tag
+        run: |
+          TAG="v${{ steps.version.outputs.value }}"
+          if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q .; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "::notice::Tag ${TAG} already exists — skipping release"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "::notice::Tag ${TAG} not found — will release"
+          fi
+
+      - name: Install vsce
+        if: steps.tag.outputs.exists == 'false'
+        run: npm install -g @vscode/vsce
+
+      - name: Build VSIX
+        if: steps.tag.outputs.exists == 'false'
+        run: vsce package --no-dependencies
+
+      - name: Generate release notes
+        if: steps.tag.outputs.exists == 'false'
+        id: notes
+        run: |
+          VERSION="${{ steps.version.outputs.value }}"
+          DATE=$(date +"%B %d, %Y")
+
+          # Extract changelog block for this version
+          CHANGES=$(awk -v ver="$VERSION" '
+            /^## [0-9]/ {
+              if (found) exit
+              if (index($0, ver)) { found=1 }
+              next
+            }
+            found && NF { print }
+          ' CHANGELOG.md)
+
+          if [ -z "$CHANGES" ]; then
+            CHANGES="- See CHANGELOG.md for details."
+          fi
+
+          cat > release-notes.md << NOTES
+          ### What changed
+
+          ${CHANGES}
+
+          ---
+
+          ### Install
+
+          **macOS / Linux**
+          \`\`\`bash
+          curl -fsSL https://raw.githubusercontent.com/ndugram/ndu-dark/main/bootstrap.sh | bash
+          \`\`\`
+
+          **Windows**
+          \`\`\`powershell
+          irm https://raw.githubusercontent.com/ndugram/ndu-dark/main/bootstrap.ps1 | iex
+          \`\`\`
+
+          **Manual (VSIX only — theme colors, no custom UI)**
+          \`\`\`bash
+          code --install-extension ndu-dark-${VERSION}.vsix
+          \`\`\`
+
+          > The VSIX installs the color theme only. For floating panels, custom fonts, and all UI tweaks run the bootstrap above.
+
+          ---
+
+          ### Color palette
+
+          | Token | Hex | Use |
+          |-------|-----|-----|
+          | Canvas | \`#121216\` | Background behind panels |
+          | Surface | \`#181a1d\` | Panel fill |
+          | Accent | \`#548af7\` | Selections, active tabs, focus |
+          | Error | \`#f75464\` | Errors, destructive actions |
+
+          ---
+
+          *Released ${DATE}*
+          NOTES
+
+      - name: Create GitHub release
+        if: steps.tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.value }}
+          name: ndu-dark v${{ steps.version.outputs.value }}
+          body_path: release-notes.md
+          files: |
+            *.vsix
+            install.sh
+            install.ps1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

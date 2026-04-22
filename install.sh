@@ -129,6 +129,14 @@ const existingSettings = JSON.parse(stripJsonc(existingText));
 // Merge settings - ndu-dark settings take precedence
 const mergedSettings = { ...existingSettings, ...newSettings };
 
+// Preserve user's icon theme preferences
+const preserveKeys = ['workbench.iconTheme', 'workbench.productIconTheme'];
+for (const key of preserveKeys) {
+  if (existingSettings[key] !== undefined) {
+    mergedSettings[key] = existingSettings[key];
+  }
+}
+
 // Deep merge custom-ui-style.stylesheet
 const stylesheetKey = 'custom-ui-style.stylesheet';
 if (existingSettings[stylesheetKey] && newSettings[stylesheetKey]) {

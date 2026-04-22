@@ -6,3 +6,10 @@ node_modules
 !README.md
 .gitignore
 .vscodeignore
+install.sh
+install.ps1
+bootstrap.sh
+bootstrap.ps1
+settings.json
+fonts
+.ndu_dark_first_run
