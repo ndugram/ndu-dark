@@ -55,14 +55,17 @@ jobs:
           DATE=$(date +"%B %d, %Y")
 
           # Extract changelog block for this version
-          CHANGES=$(awk -v ver="$VERSION" '
-            /^## [0-9]/ {
-              if (found) exit
-              if (index($0, ver)) { found=1 }
-              next
-            }
-            found && NF { print }
-          ' CHANGELOG.md)
+          CHANGES=""
+          if [ -f CHANGELOG.md ]; then
+            CHANGES=$(awk -v ver="$VERSION" '
+              /^## [0-9]/ {
+                if (found) exit
+                if (index($0, ver)) { found=1 }
+                next
+              }
+              found && NF { print }
+            ' CHANGELOG.md)
+          fi
 
           if [ -z "$CHANGES" ]; then
             CHANGES="- See CHANGELOG.md for details."
