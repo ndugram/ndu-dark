@@ -1,211 +1,204 @@
 # ndu-dark Theme Installer for Windows
-
 param()
-
 $ErrorActionPreference = "Stop"
 
-Write-Host "ndu-dark Theme Installer for Windows" -ForegroundColor Cyan
-Write-Host "================================================" -ForegroundColor Cyan
-Write-Host ""
+# ─── ANSI Colors (Darcula palette) ───────────────────────────────────────────
+$E      = [char]27
+$RST    = "$E[0m"
+$BOLD   = "$E[1m"
+$ORANGE = "$E[38;5;215m"
+$GREEN  = "$E[38;5;71m"
+$RED    = "$E[38;5;203m"
+$YELLOW = "$E[38;5;179m"
+$BLUE   = "$E[38;5;111m"
+$PURPLE = "$E[38;5;140m"
+$GRAY   = "$E[38;5;244m"
+$WHITE  = "$E[38;5;188m"
 
-# Check if VS Code is installed
+# Enable ANSI on Windows 10+
+if ($PSVersionTable.PSVersion.Major -ge 5) {
+    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+    try { [Console]::TreatControlCAsInput = $false } catch {}
+}
+
+# ─── UI helpers ───────────────────────────────────────────────────────────────
+function Banner {
+    Write-Host ""
+    Write-Host "  $ORANGE$BOLD╔════════════════════════════════════════════╗$RST"
+    Write-Host "  $ORANGE$BOLD║$RST  $WHITE$BOLD  🌙   ndu-dark  —  Theme Installer       $RST$ORANGE$BOLD║$RST"
+    Write-Host "  $ORANGE$BOLD║$RST  $GRAY              Windows                      $RST$ORANGE$BOLD║$RST"
+    Write-Host "  $ORANGE$BOLD╚════════════════════════════════════════════╝$RST"
+    Write-Host ""
+}
+
+function Done-Banner {
+    Write-Host ""
+    Write-Host "  $GREEN$BOLD╔════════════════════════════════════════════╗$RST"
+    Write-Host "  $GREEN$BOLD║                                            ║$RST"
+    Write-Host "  $GREEN$BOLD║   🎉  ndu-dark installed successfully!    ║$RST"
+    Write-Host "  $GREEN$BOLD║       Reload VS Code to apply changes.    ║$RST"
+    Write-Host "  $GREEN$BOLD║                                            ║$RST"
+    Write-Host "  $GREEN$BOLD╚════════════════════════════════════════════╝$RST"
+    Write-Host ""
+}
+
+function Notes-Banner {
+    Write-Host ""
+    Write-Host "  $YELLOW$BOLD╔════════════════════════════════════════════╗$RST"
+    Write-Host "  $YELLOW$BOLD║  📝  First-run Notes                       ║$RST"
+    Write-Host "  $YELLOW$BOLD╠════════════════════════════════════════════╣$RST"
+    Write-Host "  $YELLOW$BOLD║$RST  $GRAY• IBM Plex Mono / FiraCode Nerd Font        $YELLOW$BOLD║$RST"
+    Write-Host "  $YELLOW$BOLD║$RST  $GRAY  must be installed separately               $YELLOW$BOLD║$RST"
+    Write-Host "  $YELLOW$BOLD║$RST  $GRAY• 'Corrupt installation' warning is normal  $YELLOW$BOLD║$RST"
+    Write-Host "  $YELLOW$BOLD║$RST  $GRAY  → gear icon → Don't Show Again            $YELLOW$BOLD║$RST"
+    Write-Host "  $YELLOW$BOLD╚════════════════════════════════════════════╝$RST"
+    Write-Host ""
+}
+
+function Step  { param($msg); Write-Host ""; Write-Host "  $BLUE$BOLD❯  $msg$RST"; Write-Host "  $GRAY──────────────────────────────────────────$RST" }
+function Ok    { param($msg); Write-Host "  $GREEN${BOLD}✓$RST  $WHITE$msg$RST" }
+function Warn  { param($msg); Write-Host "  $YELLOW⚠$RST  $YELLOW$msg$RST" }
+function Fail  { param($msg); Write-Host "  $RED✗$RST  $RED$msg$RST" }
+function Info  { param($msg); Write-Host "  $GRAY·$RST  $GRAY$msg$RST" }
+function Hint  { param($msg); Write-Host "  $PURPLE→$RST  $GRAY$msg$RST" }
+
+# ─── JSONC strip helper ───────────────────────────────────────────────────────
+function Strip-Jsonc {
+    param([string]$Text)
+    $Text = $Text -replace '//.*$', ''
+    $Text = $Text -replace '/\*[\s\S]*?\*/', ''
+    $Text = $Text -replace ',\s*([}\]])', '$1'
+    return $Text
+}
+
+# ─── Init ─────────────────────────────────────────────────────────────────────
+Banner
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$pkgJson   = Get-Content "$scriptDir\package.json" -Raw | ConvertFrom-Json
+$version   = $pkgJson.version
+
+# ─── Step 1: VS Code CLI ──────────────────────────────────────────────────────
+Step "Step 1  Checking VS Code CLI"
 $codePath = Get-Command "code" -ErrorAction SilentlyContinue
 if (-not $codePath) {
-    # Try to find code in common locations
     $possiblePaths = @(
         "$env:LOCALAPPDATA\Programs\Microsoft VS Code\bin\code.cmd",
         "$env:ProgramFiles\Microsoft VS Code\bin\code.cmd",
         "${env:ProgramFiles(x86)}\Microsoft VS Code\bin\code.cmd"
     )
-
     $found = $false
-    foreach ($path in $possiblePaths) {
-        if (Test-Path $path) {
-            $env:Path += ";$(Split-Path $path)"
-            $found = $true
-            break
-        }
+    foreach ($p in $possiblePaths) {
+        if (Test-Path $p) { $env:Path += ";$(Split-Path $p)"; $found = $true; break }
     }
-
     if (-not $found) {
-        Write-Host "Error: VS Code CLI (code) not found!" -ForegroundColor Red
-        Write-Host "Please install VS Code and make sure 'code' command is in your PATH."
-        Write-Host "You can do this by:"
-        Write-Host "  1. Open VS Code"
-        Write-Host "  2. Press Ctrl+Shift+P"
-        Write-Host "  3. Type 'Shell Command: Install code command in PATH'"
+        Fail "VS Code CLI (code) not found"
+        Hint "Open VS Code → Ctrl+Shift+P → 'Shell Command: Install code command in PATH'"
         exit 1
     }
 }
+Ok "VS Code CLI found"
 
-Write-Host "VS Code CLI found" -ForegroundColor Green
-
-# Get the directory where this script is located
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-
-Write-Host ""
-Write-Host "Step 1: Installing ndu-dark theme extension..."
-
-# Install by copying to VS Code extensions directory
-$extDir = "$env:USERPROFILE\.vscode\extensions\ndu-dark-1.1.0"
-if (Test-Path $extDir) {
-    Remove-Item -Recurse -Force $extDir
-}
+# ─── Step 2: Theme extension ──────────────────────────────────────────────────
+Step "Step 2  Installing ndu-dark extension  (v$version)"
+$extDir = "$env:USERPROFILE\.vscode\extensions\ndu-dark-$version"
+Info "Target: $extDir"
+if (Test-Path $extDir) { Remove-Item -Recurse -Force $extDir }
 New-Item -ItemType Directory -Path $extDir -Force | Out-Null
 Copy-Item "$scriptDir\package.json" "$extDir\" -Force
 Copy-Item "$scriptDir\themes" "$extDir\themes" -Recurse -Force
-
 if (Test-Path "$extDir\themes") {
-    Write-Host "Theme extension installed to $extDir" -ForegroundColor Green
+    Ok "Extension installed"
 } else {
-    Write-Host "Failed to install theme extension" -ForegroundColor Red
+    Fail "Failed to install extension"
     exit 1
 }
 
-Write-Host ""
-Write-Host "Step 2: Installing Custom UI Style extension..."
+# ─── Step 3: Custom UI Style ──────────────────────────────────────────────────
+Step "Step 3  Installing Custom UI Style extension"
 try {
-    $output = code --install-extension subframe7536.custom-ui-style --force 2>&1
-    Write-Host "Custom UI Style extension installed" -ForegroundColor Green
+    code --install-extension subframe7536.custom-ui-style --force 2>&1 | Out-Null
+    Ok "Custom UI Style installed"
 } catch {
-    Write-Host "Could not install Custom UI Style extension automatically" -ForegroundColor Yellow
-    Write-Host "   Please install it manually from the Extensions marketplace"
+    Warn "Could not install automatically"
+    Hint "Install 'Custom UI Style' from Extensions marketplace manually"
 }
 
-Write-Host ""
-Write-Host "Step 3: Installing Bear Sans UI fonts..."
+# ─── Step 4: Fonts ────────────────────────────────────────────────────────────
+Step "Step 4  Installing Bear Sans UI fonts"
 $fontDir = "$env:LOCALAPPDATA\Microsoft\Windows\Fonts"
-
-# Try user fonts first
-if (-not (Test-Path $fontDir)) {
-    New-Item -ItemType Directory -Path $fontDir -Force | Out-Null
-}
-
+if (-not (Test-Path $fontDir)) { New-Item -ItemType Directory -Path $fontDir -Force | Out-Null }
+Info "Target: $fontDir"
 try {
     $fonts = Get-ChildItem "$scriptDir\fonts\*.otf"
+    $fontCount = $fonts.Count
     foreach ($font in $fonts) {
-        try {
-            Copy-Item $font.FullName $fontDir -Force -ErrorAction SilentlyContinue
-        } catch {
-            # Silently continue if copy fails
-        }
+        try { Copy-Item $font.FullName $fontDir -Force -ErrorAction SilentlyContinue } catch {}
     }
-
-    Write-Host "Fonts installed" -ForegroundColor Green
-    Write-Host "   Note: You may need to restart applications to use the new fonts" -ForegroundColor DarkGray
+    Ok "$fontCount fonts installed"
+    Hint "Restart apps to load new fonts"
 } catch {
-    Write-Host "Could not install fonts automatically" -ForegroundColor Yellow
-    Write-Host "   Please manually install the fonts from the 'fonts/' folder"
-    Write-Host "   Select all .otf files and right-click > Install"
+    Warn "Could not install fonts automatically"
+    Hint "Select all .otf files in 'fonts/' → right-click → Install"
 }
 
-Write-Host ""
-Write-Host "Step 4: Applying VS Code settings..."
-$settingsDir = "$env:APPDATA\Code\User"
-if (-not (Test-Path $settingsDir)) {
-    New-Item -ItemType Directory -Path $settingsDir -Force | Out-Null
-}
-
+# ─── Step 5: VS Code settings ─────────────────────────────────────────────────
+Step "Step 5  Applying VS Code settings"
+$settingsDir  = "$env:APPDATA\Code\User"
+if (-not (Test-Path $settingsDir)) { New-Item -ItemType Directory -Path $settingsDir -Force | Out-Null }
 $settingsFile = Join-Path $settingsDir "settings.json"
-
-# Function to strip JSONC features (comments and trailing commas) for JSON parsing
-function Strip-Jsonc {
-    param([string]$Text)
-    # Remove single-line comments
-    $Text = $Text -replace '//.*$', ''
-    # Remove multi-line comments
-    $Text = $Text -replace '/\*[\s\S]*?\*/', ''
-    # Remove trailing commas before } or ]
-    $Text = $Text -replace ',\s*([}\]])', '$1'
-    return $Text
-}
-
-$newSettingsRaw = Get-Content "$scriptDir\settings.json" -Raw
-$newSettings = (Strip-Jsonc $newSettingsRaw) | ConvertFrom-Json
+$newSettings  = (Strip-Jsonc (Get-Content "$scriptDir\settings.json" -Raw)) | ConvertFrom-Json
 
 if (Test-Path $settingsFile) {
-    Write-Host "Existing settings.json found" -ForegroundColor Yellow
-    Write-Host "   Backing up to settings.json.backup"
+    Warn "Existing settings found — creating backup"
     Copy-Item $settingsFile "$settingsFile.backup" -Force
-
+    Info "Backup: settings.json.backup"
     try {
-        $existingRaw = Get-Content $settingsFile -Raw
-        $existingSettings = (Strip-Jsonc $existingRaw) | ConvertFrom-Json
+        $existingSettings = (Strip-Jsonc (Get-Content $settingsFile -Raw)) | ConvertFrom-Json
+        $merged = @{}
+        $existingSettings.PSObject.Properties | ForEach-Object { $merged[$_.Name] = $_.Value }
+        $newSettings.PSObject.Properties      | ForEach-Object { $merged[$_.Name] = $_.Value }
 
-        # Merge settings - ndu-dark settings take precedence
-        $mergedSettings = @{}
-        $existingSettings.PSObject.Properties | ForEach-Object {
-            $mergedSettings[$_.Name] = $_.Value
-        }
-        $newSettings.PSObject.Properties | ForEach-Object {
-            $mergedSettings[$_.Name] = $_.Value
-        }
-
-        # Preserve user's icon theme preferences
-        $preserveKeys = @('workbench.iconTheme', 'workbench.productIconTheme')
-        foreach ($key in $preserveKeys) {
+        foreach ($key in @('workbench.iconTheme', 'workbench.productIconTheme')) {
             if ($existingSettings.PSObject.Properties[$key]) {
-                $mergedSettings[$key] = $existingSettings.$key
+                $merged[$key] = $existingSettings.$key
             }
         }
 
-        # Deep merge custom-ui-style.stylesheet
-        $stylesheetKey = 'custom-ui-style.stylesheet'
-        if ($existingSettings.$stylesheetKey -and $newSettings.$stylesheetKey) {
-            $mergedStylesheet = @{}
-            $existingSettings.$stylesheetKey.PSObject.Properties | ForEach-Object {
-                $mergedStylesheet[$_.Name] = $_.Value
-            }
-            $newSettings.$stylesheetKey.PSObject.Properties | ForEach-Object {
-                $mergedStylesheet[$_.Name] = $_.Value
-            }
-            $mergedSettings[$stylesheetKey] = [PSCustomObject]$mergedStylesheet
+        $sk = 'custom-ui-style.stylesheet'
+        if ($existingSettings.$sk -and $newSettings.$sk) {
+            $ms = @{}
+            $existingSettings.$sk.PSObject.Properties | ForEach-Object { $ms[$_.Name] = $_.Value }
+            $newSettings.$sk.PSObject.Properties      | ForEach-Object { $ms[$_.Name] = $_.Value }
+            $merged[$sk] = [PSCustomObject]$ms
         }
 
-        [PSCustomObject]$mergedSettings | ConvertTo-Json -Depth 100 | Set-Content $settingsFile
-        Write-Host "Settings merged successfully" -ForegroundColor Green
+        [PSCustomObject]$merged | ConvertTo-Json -Depth 100 | Set-Content $settingsFile
+        Ok "Settings merged successfully"
     } catch {
-        Write-Host "Could not merge settings automatically" -ForegroundColor Yellow
-        Write-Host "   Please manually merge settings.json from this repo into your VS Code settings"
-        Write-Host "   Your original settings have been backed up to settings.json.backup"
+        Warn "Could not merge automatically"
+        Hint "Merge settings.json manually — backup saved"
     }
 } else {
     Copy-Item "$scriptDir\settings.json" $settingsFile
-    Write-Host "Settings applied" -ForegroundColor Green
+    Ok "Settings applied"
 }
 
-Write-Host ""
-Write-Host "Step 5: Enabling Custom UI Style..."
-
-# Check if this is the first run
+# ─── First-run notes ──────────────────────────────────────────────────────────
 $firstRunFile = Join-Path $scriptDir ".ndu_dark_first_run"
 if (-not (Test-Path $firstRunFile)) {
     New-Item -ItemType File -Path $firstRunFile | Out-Null
-    Write-Host ""
-    Write-Host "Important Notes:" -ForegroundColor Yellow
-    Write-Host "   - IBM Plex Mono and FiraCode Nerd Font Mono need to be installed separately"
-    Write-Host "   - After VS Code reloads, you may see a 'corrupt installation' warning"
-    Write-Host "   - This is expected - click the gear icon and select 'Don't Show Again'"
-    Write-Host ""
-    Read-Host "Press Enter to continue and reload VS Code"
+    Notes-Banner
+    Read-Host "  Press Enter to continue and reload VS Code"
 }
 
-Write-Host "   Applying CSS customizations..."
-
-Write-Host ""
-Write-Host "ndu-dark theme has been installed!" -ForegroundColor Green
-Write-Host "   VS Code will now reload to apply the custom UI style."
-Write-Host ""
-
-# Reload VS Code
-Write-Host "   Reloading VS Code..." -ForegroundColor Cyan
+# ─── Step 6: Reload VS Code ───────────────────────────────────────────────────
+Step "Step 6  Reloading VS Code"
 try {
     code --reload-window 2>$null
 } catch {
-    code $scriptDir 2>$null
+    try { code $scriptDir 2>$null } catch {}
 }
+Ok "Reload triggered"
 
-Write-Host ""
-Write-Host "Done!" -ForegroundColor Green
-
-Start-Sleep -Seconds 3
+Done-Banner
+Start-Sleep -Seconds 2
