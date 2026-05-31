@@ -140,8 +140,8 @@
     "editorWhitespace.foreground": "#4C5052",
     "editorIndentGuide.background": "#4C505200",
     "editorIndentGuide.activeBackground": "#4C5052",
-    "editorBracketMatch.background": "#4C505250",
-    "editorBracketMatch.border": "#4C5052",
+    "editorBracketMatch.background": "#3B3B1050",
+    "editorBracketMatch.border": "#6B6B2B",
     "editorRuler.foreground": "#4C5052",
     "editorCodeLens.foreground": "#606366",
     "editorBracketHighlight.foreground1": "#CC7832",
@@ -211,7 +211,7 @@
     "panelTitle.activeBorder": "#589DF6",
     "panelTitle.activeForeground": "#A9B7C6",
     "panelTitle.inactiveForeground": "#808080",
-    "panelSection.border": "#4C5052",
+    "panelSection.border": "#4C505250",
 
     "statusBar.background": "#3C3F41",
     "statusBar.foreground": "#A9B7C6",
@@ -344,6 +344,19 @@
     "editorStickyScroll.background": "#2B2B2B",
     "editorStickyScrollHover.background": "#323232",
 
+    "editorGhostText.foreground": "#606366",
+    "editorGhostText.background": "#00000000",
+
+    "editor.linkedEditingBackground": "#214283",
+
+    "editor.snippetTabstopHighlightBackground": "#4C505240",
+    "editor.snippetTabstopHighlightBorder": "#4C5052",
+    "editor.snippetFinalTabstopHighlightBackground": "#32593d30",
+    "editor.snippetFinalTabstopHighlightBorder": "#499C5470",
+
+    "editor.inlineValuesForeground": "#808080",
+    "editor.inlineValuesBackground": "#00000030",
+
     "diffEditor.insertedTextBackground": "#499C5418",
     "diffEditor.removedTextBackground": "#FF6B6818",
     "diffEditor.insertedLineBackground": "#499C5415",
@@ -462,9 +475,11 @@
       "name": "Functions",
       "scope": [
         "entity.name.function",
-        "meta.function-call entity.name.function",
+        "entity.name.function.call",
+        "variable.function",
         "support.function",
-        "meta.function-call"
+        "support.function.builtin",
+        "meta.function-call entity.name.function"
       ],
       "settings": {
         "foreground": "#FFC66D"
@@ -504,6 +519,21 @@
       ],
       "settings": {
         "foreground": "#A9B7C6"
+      }
+    },
+    {
+      "name": "TypeScript/JavaScript primitive types",
+      "scope": [
+        "support.type.primitive.ts",
+        "support.type.primitive.tsx",
+        "support.type.primitive.js",
+        "support.type.builtin.ts",
+        "support.type.builtin.tsx",
+        "support.type.keyword.ts",
+        "support.type.keyword.tsx"
+      ],
+      "settings": {
+        "foreground": "#CC7832"
       }
     },
     {
@@ -576,6 +606,18 @@
       ],
       "settings": {
         "foreground": "#9876AA"
+      }
+    },
+    {
+      "name": "Logical keyword operators (and, or, not, is, in)",
+      "scope": [
+        "keyword.operator.logical.python",
+        "keyword.operator.logical.ruby",
+        "keyword.operator.logical.kotlin",
+        "keyword.operator.word"
+      ],
+      "settings": {
+        "foreground": "#CC7832"
       }
     },
     {
@@ -1059,16 +1101,28 @@
   "semanticTokenColors": {
     "function": "#FFC66D",
     "function.declaration": "#FFC66D",
+    "function.defaultLibrary": "#FFC66D",
     "method": "#FFC66D",
     "method.declaration": "#FFC66D",
+    "method.defaultLibrary": "#FFC66D",
     "variable": "#A9B7C6",
     "variable.readonly": "#9876AA",
     "variable.declaration": "#A9B7C6",
+    "variable.defaultLibrary": "#9876AA",
     "parameter": "#A9B7C6",
+    "selfParameter": {
+      "foreground": "#CC7832",
+      "fontStyle": "italic"
+    },
     "property": "#9876AA",
     "property.declaration": "#9876AA",
     "property.readonly": "#9876AA",
+    "property.static": {
+      "foreground": "#9876AA",
+      "fontStyle": "italic"
+    },
     "type": "#A9B7C6",
+    "type.defaultLibrary": "#A9B7C6",
     "class": "#A9B7C6",
     "interface": "#A9B7C6",
     "enum": "#A9B7C6",
@@ -1087,6 +1141,8 @@
       "foreground": "#808080",
       "fontStyle": "italic"
     },
-    "regexp": "#6897BB"
+    "regexp": "#6897BB",
+    "label": "#CC7832",
+    "operator": "#A9B7C6"
   }
 }
