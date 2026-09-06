@@ -1,5 +1,5 @@
 {
-  "// ndu-dark Settings v1.1.0": "",
+  "// ndu-dark Settings v1.2.0  —  Liquid Glass": "",
   "workbench.colorTheme": "ndu-dark",
   "workbench.iconTheme": "Material Icon Theme",
   "workbench.productIconTheme": "Fluent Icons",
@@ -9,6 +9,64 @@
   "workbench.tree.indent": 16,
   "workbench.tree.renderIndentGuides": "always",
   "editor.minimap.showSlider": "always",
+
+  "// ─── Liquid Glass · real window blur (Custom UI Style patches Electron) ───": "",
+  "// macOS 12+: 'vibrancy' blurs the desktop/wallpaper behind the whole window.": "",
+  "// Windows 11 22H2+: delete 'vibrancy'/'visualEffectState', use the two commented keys.": "",
+  "// Linux: compositor-dependent — 'transparent': true only, blur needs a WM like KWin/Picom.": "",
+  "// Run  >Custom UI Style: Reload  after changing this block.": "",
+  "// Windows 11 key 1  →  backgroundMaterial: acrylic": "",
+  "// Windows 11 key 2  →  transparent: true": "",
+  "custom-ui-style.electron": {
+    "vibrancy": "under-window",
+    "visualEffectState": "active",
+    "backgroundColor": "#00000000"
+  },
+
+  "// ─── Liquid Glass · translucent surfaces so the blur shows through ───": "",
+  "// Scoped to [ndu-dark]; raise the last two hex digits (alpha) for more opacity.": "",
+  "workbench.colorCustomizations": {
+    "[ndu-dark]": {
+      "editor.background": "#161619e6",
+      "editorGutter.background": "#00000000",
+      "editorStickyScroll.background": "#161619f2",
+      "sideBar.background": "#1212168c",
+      "sideBarSectionHeader.background": "#00000000",
+      "sideBarStickyScroll.background": "#12121699",
+      "activityBar.background": "#00000000",
+      "panel.background": "#181a1d99",
+      "panelSectionHeader.background": "#00000000",
+      "terminal.background": "#12121600",
+      "titleBar.activeBackground": "#12121673",
+      "titleBar.inactiveBackground": "#12121659",
+      "statusBar.background": "#12121673",
+      "statusBar.noFolderBackground": "#12121673",
+      "statusBar.debuggingBackground": "#c7743bcc",
+      "editorGroupHeader.tabsBackground": "#00000000",
+      "editorGroupHeader.noTabsBackground": "#00000000",
+      "tab.activeBackground": "#1e1f24cc",
+      "tab.inactiveBackground": "#00000000",
+      "tab.hoverBackground": "#2a2b31b3",
+      "tab.unfocusedActiveBackground": "#1e1f2499",
+      "breadcrumb.background": "#00000000",
+      "editorWidget.background": "#181a1de6",
+      "editorHoverWidget.background": "#181a1de6",
+      "editorSuggestWidget.background": "#181a1de6",
+      "debugToolBar.background": "#181a1de6",
+      "peekViewEditor.background": "#161619f2",
+      "peekViewResult.background": "#12121699",
+      "quickInput.background": "#181a1dbf",
+      "quickInputList.focusBackground": "#548af726",
+      "menu.background": "#181a1de6",
+      "dropdown.background": "#181a1de6",
+      "notifications.background": "#181a1de6",
+      "notificationCenterHeader.background": "#12121699",
+      "input.background": "#0e0e11b3",
+      "minimap.background": "#00000000",
+      "scrollbar.shadow": "#00000000"
+    }
+  },
+
   "custom-ui-style.stylesheet": {
     ".monaco-workbench": {
       "--islands-panel-radius": "24px",
@@ -21,7 +79,13 @@
       "--islands-bg-surface": "#181a1d",
       "--islands-tab-border": "#25262a",
       "--islands-accent": "#548af7",
-      "background-color": "var(--islands-bg-canvas) !important"
+      "--islands-glass-chrome": "linear-gradient(135deg, rgba(255,255,255,0.055), rgba(255,255,255,0) 42%), rgba(18,19,23,0.60)",
+      "--islands-glass-surface": "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0) 40%), rgba(20,21,25,0.72)",
+      "--islands-glass-strip": "rgba(16,16,20,0.52)",
+      "--islands-blur": "blur(28px) saturate(180%)",
+      "--islands-blur-strong": "blur(36px) saturate(190%)",
+      "--islands-glass-edge": "inset 0 1px 0 0 rgba(255,255,255,0.14), inset 1px 0 0 0 rgba(255,255,255,0.07), inset 0 0 44px 0 rgba(255,255,255,0.028)",
+      "background-color": "transparent !important"
     },
 
     ".part.sidebar": {
@@ -30,11 +94,20 @@
       "border-radius": "var(--islands-panel-radius) !important",
       "overflow": "clip !important",
       "max-height": "calc(100% - 8px) !important",
+      "background": "var(--islands-glass-chrome) !important",
+      "backdrop-filter": "var(--islands-blur) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur) !important",
       "border-top": "1px solid rgba(255,255,255,0.1) !important",
       "border-left": "1px solid rgba(255,255,255,0.06) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
       "border-right": "1px solid rgba(255,255,255,0.02) !important",
-      "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
+      "box-shadow": "var(--islands-glass-edge), 0 8px 30px 0 rgba(0,0,0,0.38) !important"
+    },
+    ".part.sidebar > .composite": {
+      "background": "transparent !important"
+    },
+    ".part.sidebar .pane-body": {
+      "background": "transparent !important"
     },
     ".part.sidebar .composite.title": {
       "padding": "8px 20px 0 0 !important"
@@ -116,11 +189,19 @@
       "border-radius": "var(--islands-panel-radius) !important",
       "overflow": "clip !important",
       "max-height": "calc(100% - var(--islands-panel-top) - 2px) !important",
+      "backdrop-filter": "var(--islands-blur) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur) !important",
       "border-top": "1px solid rgba(255,255,255,0.12) !important",
       "border-left": "1px solid rgba(255,255,255,0.08) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.03) !important",
       "border-right": "1px solid rgba(255,255,255,0.03) !important",
-      "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
+      "box-shadow": "var(--islands-glass-edge), 0 8px 30px 0 rgba(0,0,0,0.38) !important"
+    },
+    ".part.editor .editor-group-container > .editor-container": {
+      "background": "transparent !important"
+    },
+    ".part.editor .editor-group-watermark": {
+      "background": "transparent !important"
     },
     ".editor-actions": {
       "padding-right": "20px !important",
@@ -169,9 +250,62 @@
 
     ".monaco-hover": {
       "border-radius": "var(--islands-input-radius) !important",
-      "border": "1px solid rgba(255,255,255,0.08) !important",
-      "box-shadow": "0 4px 16px 0 rgba(0,0,0,0.4) !important",
+      "border": "1px solid rgba(255,255,255,0.1) !important",
+      "background": "var(--islands-glass-surface) !important",
+      "backdrop-filter": "var(--islands-blur-strong) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur-strong) !important",
+      "box-shadow": "var(--islands-glass-edge), 0 10px 32px 0 rgba(0,0,0,0.45) !important",
       "overflow": "clip !important"
+    },
+    ".editor-widget.suggest-widget": {
+      "border-radius": "var(--islands-input-radius) !important",
+      "border": "1px solid rgba(255,255,255,0.1) !important",
+      "background": "var(--islands-glass-surface) !important",
+      "backdrop-filter": "var(--islands-blur-strong) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur-strong) !important",
+      "box-shadow": "var(--islands-glass-edge), 0 12px 36px 0 rgba(0,0,0,0.5) !important",
+      "overflow": "clip !important"
+    },
+    ".editor-widget.suggest-widget .monaco-list-rows": {
+      "background": "transparent !important"
+    },
+    ".suggest-details-container .suggest-details": {
+      "background": "var(--islands-glass-surface) !important",
+      "backdrop-filter": "var(--islands-blur-strong) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur-strong) !important",
+      "border-radius": "var(--islands-input-radius) !important",
+      "border": "1px solid rgba(255,255,255,0.1) !important",
+      "overflow": "clip !important"
+    },
+    ".editor-widget.parameter-hints-widget": {
+      "border-radius": "var(--islands-input-radius) !important",
+      "border": "1px solid rgba(255,255,255,0.1) !important",
+      "background": "var(--islands-glass-surface) !important",
+      "backdrop-filter": "var(--islands-blur-strong) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur-strong) !important",
+      "box-shadow": "var(--islands-glass-edge), 0 10px 32px 0 rgba(0,0,0,0.45) !important",
+      "overflow": "clip !important"
+    },
+    ".editor-widget.find-widget": {
+      "border-radius": "0 0 var(--islands-input-radius) var(--islands-input-radius) !important",
+      "border": "1px solid rgba(255,255,255,0.1) !important",
+      "border-top": "none !important",
+      "background": "var(--islands-glass-surface) !important",
+      "backdrop-filter": "var(--islands-blur-strong) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur-strong) !important",
+      "box-shadow": "0 10px 32px 0 rgba(0,0,0,0.45) !important"
+    },
+    ".context-view .monaco-menu .monaco-action-bar.vertical": {
+      "border-radius": "var(--islands-input-radius) !important",
+      "border": "1px solid rgba(255,255,255,0.1) !important",
+      "background": "var(--islands-glass-surface) !important",
+      "backdrop-filter": "var(--islands-blur-strong) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur-strong) !important",
+      "box-shadow": "var(--islands-glass-edge), 0 12px 36px 0 rgba(0,0,0,0.5) !important",
+      "overflow": "clip !important"
+    },
+    ".monaco-workbench .monaco-menu .monaco-action-bar.vertical .action-menu-item": {
+      "background": "transparent !important"
     },
 
     ".monaco-breadcrumbs": {
@@ -249,12 +383,17 @@
       "border-radius": "var(--islands-panel-radius) !important",
       "overflow": "clip !important",
       "box-sizing": "border-box !important",
-      "background-color": "var(--islands-bg-surface) !important",
-      "border-top": "6px solid var(--islands-bg-canvas) !important",
-      "border-left": "var(--islands-panel-gap) solid var(--islands-bg-canvas) !important",
-      "border-right": "var(--islands-panel-gap) solid var(--islands-bg-canvas) !important",
+      "background": "var(--islands-glass-chrome) !important",
+      "backdrop-filter": "var(--islands-blur) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur) !important",
+      "border-top": "6px solid transparent !important",
+      "border-left": "var(--islands-panel-gap) solid transparent !important",
+      "border-right": "var(--islands-panel-gap) solid transparent !important",
       "border-bottom": "none !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.1), inset 1px 0 0 0 rgba(255,255,255,0.06), inset -1px 0 0 0 rgba(255,255,255,0.02) !important"
+      "box-shadow": "var(--islands-glass-edge), 0 8px 30px 0 rgba(0,0,0,0.38) !important"
+    },
+    ".part.panel.bottom .terminal-outer-container .xterm-viewport": {
+      "background": "transparent !important"
     },
     ".part.panel.bottom > .composite.title": {
       "position": "relative !important",
@@ -270,7 +409,8 @@
       "border-bottom": "none !important"
     },
     ".part.panel.bottom .pane-body": {
-      "border-bottom": "none !important"
+      "border-bottom": "none !important",
+      "background": "transparent !important"
     },
     ".part.panel.bottom .split-view-view": {
       "border-bottom": "none !important"
@@ -311,13 +451,15 @@
     },
 
     ".part.activitybar": {
-      "background": "var(--islands-bg-canvas) !important",
+      "background": "transparent !important",
       "margin": "8px 0 30px 0 !important",
       "overflow": "visible !important",
       "width": "64px !important"
     },
     ".part.activitybar .composite-bar": {
-      "background": "color-mix(in srgb, var(--islands-bg-canvas), var(--islands-bg-surface) 30%) !important",
+      "background": "linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0) 45%), rgba(19,20,24,0.55) !important",
+      "backdrop-filter": "var(--islands-blur) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur) !important",
       "border-radius": "9999px !important",
       "overflow": "clip !important",
       "width": "calc(100% - 4px) !important",
@@ -333,7 +475,7 @@
       "border-left": "1px solid rgba(255,255,255,0.08) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.03) !important",
       "border-right": "1px solid rgba(255,255,255,0.05) !important",
-      "box-shadow": "inset 0 1px 3px 0 rgba(255,255,255,0.06), 0 1px 4px 0 rgba(0,0,0,0.3) !important"
+      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.16), inset 0 1px 3px 0 rgba(255,255,255,0.06), 0 6px 20px 0 rgba(0,0,0,0.35) !important"
     },
     ".part.activitybar .content > div:last-child": {
       "transform": "translateY(-10px) !important"
@@ -385,10 +527,15 @@
     },
 
     ".part.titlebar": {
-      "background-color": "var(--islands-bg-canvas) !important"
+      "background": "var(--islands-glass-strip) !important",
+      "backdrop-filter": "var(--islands-blur) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur) !important"
     },
     ".part.statusbar": {
-      "background-color": "var(--islands-bg-canvas) !important",
+      "background": "var(--islands-glass-strip) !important",
+      "backdrop-filter": "var(--islands-blur) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur) !important",
+      "border-top": "1px solid rgba(255,255,255,0.06) !important",
       "font-family": "'Bear Sans UI', sans-serif !important"
     },
     ".part.statusbar .statusbar-item-label": {
@@ -424,8 +571,10 @@
       "border-radius": "9999px !important",
       "overflow": "clip !important",
       "border": "none !important",
-      "background": "color-mix(in srgb, var(--islands-bg-canvas), var(--islands-bg-surface) 30%) !important",
-      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.1), inset 1px 0 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.02), inset -1px 0 0 0 rgba(255,255,255,0.02), inset 0 1px 3px 0 rgba(255,255,255,0.04), 0 1px 4px 0 rgba(0,0,0,0.25) !important",
+      "background": "linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0) 60%), rgba(19,20,24,0.55) !important",
+      "backdrop-filter": "var(--islands-blur) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur) !important",
+      "box-shadow": "inset 0 1px 0 0 rgba(255,255,255,0.14), inset 1px 0 0 0 rgba(255,255,255,0.05), inset 0 -1px 0 0 rgba(255,255,255,0.02), inset -1px 0 0 0 rgba(255,255,255,0.02), inset 0 1px 3px 0 rgba(255,255,255,0.04), 0 4px 14px 0 rgba(0,0,0,0.3) !important",
       "transition": "box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important"
     },
     ".command-center-center *": {
@@ -439,20 +588,32 @@
     ".notification-toast": {
       "border-radius": "var(--islands-widget-radius) !important",
       "overflow": "clip !important",
+      "background": "var(--islands-glass-surface) !important",
+      "backdrop-filter": "var(--islands-blur-strong) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur-strong) !important",
       "border-top": "1px solid rgba(255,255,255,0.1) !important",
       "border-left": "1px solid rgba(255,255,255,0.06) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
       "border-right": "1px solid rgba(255,255,255,0.02) !important",
-      "box-shadow": "0 4px 12px 0 rgba(0,0,0,0.4) !important"
+      "box-shadow": "var(--islands-glass-edge), 0 12px 40px 0 rgba(0,0,0,0.45) !important"
     },
     ".notifications-center": {
       "border-radius": "var(--islands-widget-radius) !important",
       "overflow": "clip !important",
+      "background": "var(--islands-glass-surface) !important",
+      "backdrop-filter": "var(--islands-blur-strong) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur-strong) !important",
       "border-top": "1px solid rgba(255,255,255,0.1) !important",
       "border-left": "1px solid rgba(255,255,255,0.06) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
       "border-right": "1px solid rgba(255,255,255,0.02) !important",
-      "box-shadow": "0 4px 12px 0 rgba(0,0,0,0.4) !important"
+      "box-shadow": "var(--islands-glass-edge), 0 12px 40px 0 rgba(0,0,0,0.45) !important"
+    },
+    ".notifications-center .notifications-list-container": {
+      "background": "transparent !important"
+    },
+    ".notification-toast .notification-list-item": {
+      "background": "transparent !important"
     },
     ".notification-list-item-actions-container": {
       "border-radius": "var(--islands-item-radius) !important"
@@ -475,11 +636,20 @@
       "border-radius": "var(--islands-panel-radius) !important",
       "overflow": "clip !important",
       "max-height": "calc(100% - var(--islands-panel-top) - 2px) !important",
+      "background": "var(--islands-glass-chrome) !important",
+      "backdrop-filter": "var(--islands-blur) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur) !important",
       "border-top": "1px solid rgba(255,255,255,0.1) !important",
       "border-left": "1px solid rgba(255,255,255,0.06) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
       "border-right": "1px solid rgba(255,255,255,0.02) !important",
-      "box-shadow": "0 2px 8px 0 rgba(0,0,0,0.3) !important"
+      "box-shadow": "var(--islands-glass-edge), 0 8px 30px 0 rgba(0,0,0,0.38) !important"
+    },
+    ".part.auxiliarybar > .composite": {
+      "background": "transparent !important"
+    },
+    ".part.auxiliarybar .pane-body": {
+      "background": "transparent !important"
     },
     ".part.auxiliarybar .composite.title": {
       "padding": "8px 0 0 8px !important"
@@ -497,11 +667,20 @@
     ".quick-input-widget": {
       "border-radius": "var(--islands-widget-radius) !important",
       "overflow": "clip !important",
-      "border-top": "1px solid rgba(255,255,255,0.1) !important",
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
+      "background": "var(--islands-glass-surface) !important",
+      "backdrop-filter": "var(--islands-blur-strong) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur-strong) !important",
+      "border-top": "1px solid rgba(255,255,255,0.12) !important",
+      "border-left": "1px solid rgba(255,255,255,0.07) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
       "border-right": "1px solid rgba(255,255,255,0.02) !important",
-      "box-shadow": "0 8px 24px 0 rgba(0,0,0,0.5) !important"
+      "box-shadow": "var(--islands-glass-edge), 0 16px 48px 0 rgba(0,0,0,0.55) !important"
+    },
+    ".quick-input-widget .quick-input-list .monaco-list-rows": {
+      "background": "transparent !important"
+    },
+    ".quick-input-widget .quick-input-header": {
+      "background": "transparent !important"
     },
     ".quick-input-widget .monaco-list-row": {
       "border-radius": "var(--islands-item-radius) !important",
@@ -547,11 +726,19 @@
     ".monaco-dialog-box": {
       "border-radius": "var(--islands-widget-radius) !important",
       "overflow": "clip !important",
-      "border-top": "1px solid rgba(255,255,255,0.1) !important",
-      "border-left": "1px solid rgba(255,255,255,0.06) !important",
+      "background": "var(--islands-glass-surface) !important",
+      "backdrop-filter": "var(--islands-blur-strong) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur-strong) !important",
+      "border-top": "1px solid rgba(255,255,255,0.12) !important",
+      "border-left": "1px solid rgba(255,255,255,0.07) !important",
       "border-bottom": "1px solid rgba(255,255,255,0.02) !important",
       "border-right": "1px solid rgba(255,255,255,0.02) !important",
-      "box-shadow": "0 8px 24px 0 rgba(0,0,0,0.5) !important"
+      "box-shadow": "var(--islands-glass-edge), 0 20px 60px 0 rgba(0,0,0,0.6) !important"
+    },
+    ".monaco-workbench .dialog-shadow": {
+      "background": "rgba(0,0,0,0.35) !important",
+      "backdrop-filter": "blur(3px) !important",
+      "-webkit-backdrop-filter": "blur(3px) !important"
     },
     ".monaco-dialog-box .dialog-buttons .monaco-button": {
       "border-radius": "var(--islands-input-radius) !important"
@@ -574,7 +761,9 @@
       "overflow": "clip !important"
     },
     ".chat-input-container": {
-      "background-color": "var(--islands-bg-surface) !important",
+      "background": "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0) 40%), rgba(20,21,25,0.6) !important",
+      "backdrop-filter": "var(--islands-blur) !important",
+      "-webkit-backdrop-filter": "var(--islands-blur) !important",
       "border-radius": "var(--islands-widget-radius) !important",
       "border-top": "1px solid rgba(255,255,255,0.1) !important",
       "border-left": "1px solid rgba(255,255,255,0.06) !important",
@@ -583,7 +772,7 @@
       "overflow": "clip !important"
     },
     ".chat-input-container .monaco-inputbox": {
-      "background-color": "var(--islands-bg-surface) !important"
+      "background": "transparent !important"
     },
     ".interactive-input-part": {
       "border-radius": "var(--islands-widget-radius) !important",

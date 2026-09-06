@@ -172,6 +172,29 @@ if (Test-Path $settingsFile) {
             $merged[$sk] = [PSCustomObject]$ms
         }
 
+        $ek = 'custom-ui-style.electron'
+        if ($existingSettings.$ek -and $newSettings.$ek) {
+            $me = @{}
+            $existingSettings.$ek.PSObject.Properties | ForEach-Object { $me[$_.Name] = $_.Value }
+            $newSettings.$ek.PSObject.Properties      | ForEach-Object { $me[$_.Name] = $_.Value }
+            $merged[$ek] = [PSCustomObject]$me
+        }
+
+        $ck = 'workbench.colorCustomizations'
+        if ($existingSettings.$ck -and $newSettings.$ck) {
+            $mc = @{}
+            $existingSettings.$ck.PSObject.Properties | ForEach-Object { $mc[$_.Name] = $_.Value }
+            $newSettings.$ck.PSObject.Properties      | ForEach-Object { $mc[$_.Name] = $_.Value }
+            $scope = '[ndu-dark]'
+            if ($existingSettings.$ck.$scope -and $newSettings.$ck.$scope) {
+                $msc = @{}
+                $existingSettings.$ck.$scope.PSObject.Properties | ForEach-Object { $msc[$_.Name] = $_.Value }
+                $newSettings.$ck.$scope.PSObject.Properties      | ForEach-Object { $msc[$_.Name] = $_.Value }
+                $mc[$scope] = [PSCustomObject]$msc
+            }
+            $merged[$ck] = [PSCustomObject]$mc
+        }
+
         [PSCustomObject]$merged | ConvertTo-Json -Depth 100 | Set-Content $settingsFile
         Ok "Settings merged successfully"
     } catch {

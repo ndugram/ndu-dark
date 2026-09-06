@@ -61,7 +61,7 @@ hint() { echo -e "  ${PURPLE}→${RST}  ${GRAY}$*${RST}"; }
 # ─── Init ─────────────────────────────────────────────────────────────────────
 banner
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-VERSION=$(node -e "console.log(require('$SCRIPT_DIR/package.json').version)" 2>/dev/null || echo "1.1.3")
+VERSION=$(node -e "console.log(require('$SCRIPT_DIR/package.json').version)" 2>/dev/null || echo "1.2.0")
 
 # ─── Step 1: VS Code CLI ──────────────────────────────────────────────────────
 step "Step 1  Checking VS Code CLI"
@@ -156,6 +156,19 @@ for (const key of ['workbench.iconTheme', 'workbench.productIconTheme']) {
 const sk = 'custom-ui-style.stylesheet';
 if (existingSettings[sk] && newSettings[sk]) {
     merged[sk] = { ...existingSettings[sk], ...newSettings[sk] };
+}
+
+const ek = 'custom-ui-style.electron';
+if (existingSettings[ek] && newSettings[ek]) {
+    merged[ek] = { ...existingSettings[ek], ...newSettings[ek] };
+}
+
+const ck = 'workbench.colorCustomizations';
+if (existingSettings[ck] && newSettings[ck]) {
+    merged[ck] = { ...existingSettings[ck], ...newSettings[ck] };
+    if (existingSettings[ck]['[ndu-dark]'] && newSettings[ck]['[ndu-dark]']) {
+        merged[ck]['[ndu-dark]'] = { ...existingSettings[ck]['[ndu-dark]'], ...newSettings[ck]['[ndu-dark]'] };
+    }
 }
 
 fs.writeFileSync(settingsFile, JSON.stringify(merged, null, 2));

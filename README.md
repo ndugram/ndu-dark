@@ -4,11 +4,11 @@
 
 **A VS Code theme that looks like PyCharm stayed up all night.**
 
-Deep dark canvas. Floating glass panels. Accent-lit selections. Warm syntax.
+Real Liquid Glass. Floating panels that blur your desktop. Accent-lit selections. Warm syntax.
 
 <br/>
 
-[![Version](https://img.shields.io/badge/version-1.1.0-548af7?style=for-the-badge&labelColor=1a1b1e)](https://github.com/ndugram/ndu-dark/releases)
+[![Version](https://img.shields.io/badge/version-1.2.0-548af7?style=for-the-badge&labelColor=1a1b1e)](https://github.com/ndugram/ndu-dark/releases)
 [![License](https://img.shields.io/badge/license-MIT-3fb950?style=for-the-badge&labelColor=1a1b1e)](LICENSE)
 [![VS Code](https://img.shields.io/badge/VS%20Code-1.60+-007ACC?style=for-the-badge&labelColor=1a1b1e&logo=visualstudiocode&logoColor=007ACC)](https://code.visualstudio.com)
 
@@ -97,6 +97,39 @@ Accent   #548af7  ████  selections, active tabs, focus rings
 
 ---
 
+## Liquid Glass
+
+v1.2.0 makes the chrome genuinely translucent — panels, the command palette, menus,
+notifications and widgets are frosted glass that blur whatever is behind the VS Code
+window (wallpaper, other apps), not just a dark tint.
+
+**How it works**
+
+| Layer | Mechanism |
+|-------|-----------|
+| Window vibrancy | `custom-ui-style.electron` → `"vibrancy": "under-window"` patches the Electron window so macOS blurs the desktop behind it |
+| Translucent surfaces | `workbench.colorCustomizations["[ndu-dark]"]` drops alpha into `editor.background`, `sideBar.background`, `panel.background`, widgets, … so the vibrancy shows through |
+| In-app frost | `backdrop-filter: blur() saturate()` on every `.part.*` and overlay in `custom-ui-style.stylesheet`, plus a specular top-left edge (`--islands-glass-edge`) |
+
+**Requirements**
+
+- macOS 12+ for real desktop blur. Windows 11 22H2+: remove `vibrancy`/`visualEffectState`
+  from `custom-ui-style.electron` and add `"backgroundMaterial": "acrylic"` + `"transparent": true`.
+  Linux: blur depends on your compositor (KWin, Picom); only `"transparent": true` is portable.
+- [Custom UI Style](https://marketplace.visualstudio.com/items?itemName=subframe7536.custom-ui-style) installed and enabled.
+- Run `>Custom UI Style: Reload` (or restart VS Code) after install — the Electron patch
+  needs a full reload.
+
+**Tuning**
+
+- Too see-through? Raise the last two hex digits (alpha) on the entries in
+  `workbench.colorCustomizations["[ndu-dark]"]` — e.g. `#161619e6` → `#161619f5`.
+- Blur strength: edit `--islands-blur` / `--islands-blur-strong` in the `.monaco-workbench` block.
+- Want it back to opaque: delete the `custom-ui-style.electron` and
+  `workbench.colorCustomizations` blocks, then reload.
+
+---
+
 ## Install
 
 ### One-liner
@@ -123,7 +156,7 @@ cd ndu-dark
 ```
 
 The script does:
-1. Copies extension to `~/.vscode/extensions/ndu-dark-1.1.0/`
+1. Copies extension to `~/.vscode/extensions/ndu-dark-1.2.0/`
 2. Installs [Custom UI Style](https://marketplace.visualstudio.com/items?itemName=subframe7536.custom-ui-style) via `code --install-extension`
 3. Installs Bear Sans UI fonts system-wide
 4. Deep-merges `settings.json` into your VS Code config (non-destructive)
@@ -172,6 +205,13 @@ All values in one place — `".monaco-workbench"` block in `settings.json`:
 "--islands-bg-surface": "#181a1d"
 "--islands-tab-border": "#25262a"
 "--islands-accent": "#548af7"
+
+"--islands-glass-chrome":  "linear-gradient(...) , rgba(18,19,23,0.60)"   // side panels
+"--islands-glass-surface": "linear-gradient(...) , rgba(20,21,25,0.72)"   // widgets / overlays
+"--islands-glass-strip":   "rgba(16,16,20,0.52)"                          // title / status bar
+"--islands-blur":          "blur(28px) saturate(180%)"
+"--islands-blur-strong":   "blur(36px) saturate(190%)"
+"--islands-glass-edge":    "inset highlights for the top-left light catch"
 ```
 
 ---
@@ -184,6 +224,30 @@ All values in one place — `".monaco-workbench"` block in `settings.json`:
 Cycle the extension:
 1. `Ctrl+Shift+P` → `Custom UI Style: Disable` → Reload VS Code
 2. `Ctrl+Shift+P` → `Custom UI Style: Enable` → Reload VS Code
+
+</details>
+
+<details>
+<summary><strong>No blur / window isn't translucent</strong></summary>
+
+- The Electron patch needs a **full restart**, not just a window reload. Quit VS Code
+  completely and reopen, or run `>Custom UI Style: Reload`.
+- macOS: confirm `custom-ui-style.electron` has `"vibrancy": "under-window"`. If VS Code
+  was updated, re-run `>Custom UI Style: Reload` (updates revert the patch).
+- Windows: `vibrancy` does nothing — use `"backgroundMaterial": "acrylic"` + `"transparent": true`
+  and make sure you're on Windows 11 22H2+.
+- Linux: needs a compositor that blurs behind transparent windows (KWin, Picom). Otherwise
+  you get plain transparency, not frosted glass.
+- "Reduce transparency" in the OS accessibility settings disables vibrancy globally.
+
+</details>
+
+<details>
+<summary><strong>Editor text is hard to read over the wallpaper</strong></summary>
+
+Raise the alpha (last two hex digits) on `editor.background` in
+`workbench.colorCustomizations["[ndu-dark]"]` — `#161619e6` → `#161619f7` — or set it back
+to a solid `#161619`. Same trick for any surface that feels too thin.
 
 </details>
 
